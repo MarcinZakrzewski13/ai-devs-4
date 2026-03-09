@@ -28,13 +28,41 @@ ai-devs-4/
 └── tsconfig.json                 # Konfiguracja TypeScript
 ```
 
-## Nomenklatura plików zadań
+## Struktura zadań — konwencja katalogów
 
-Pliki zadań w `lessons/ts/` są nazwane wg schematu:
+Każde zadanie ma własny podkatalog w `lessons/ts/S{sezon}/E{epizod}/`:
+
 ```
-S{sezon}E{epizod}-{opis-kebab-case}.ts
+lessons/ts/
+├── S01/
+│   ├── E01/
+│   │   ├── main.ts              # orkiestrator — import i wywołanie kroków
+│   │   ├── types.ts             # wszystkie typy zadania
+│   │   ├── loadPeople.ts        # I/O i parsowanie danych wejściowych
+│   │   ├── filterCandidates.ts  # filtracja deterministyczna
+│   │   ├── classifyJobs.ts      # integracja z LLM (Structured Output)
+│   │   ├── buildAnswer.ts       # transformacja danych → payload odpowiedzi
+│   │   └── verifyAnswer.ts      # wysyłka + logowanie wyniku
+│   └── E02/
+│       └── ...
+└── toolset/                     # biblioteki reużywalne (wspólne dla wszystkich zadań)
 ```
-Przykład: `S01E01-programowanie-interakcji-z-modelem-jezykowym.ts`
+
+**Zasady podziału:**
+- `main.ts` — wyłącznie orkiestracja: import kroków, wywołanie w kolejności, zero logiki biznesowej
+- każdy moduł eksportuje **jedną funkcję** i robi **jedną rzecz**
+- moduły filtrowania i transformacji danych to **czyste funkcje** (bez efektów ubocznych) — łatwe do przetestowania
+- integracja z LLM izolowana w osobnym module (`classifyJobs.ts` itp.)
+- typy współdzielone przez moduły zadania żyją w `types.ts`
+
+**Przepływ danych (przykład S01E01):**
+```
+CSV → loadPeople() → PersonRecord[]
+    → filterCandidates() → PersonRecord[]
+    → classifyJobs() → Map<id, string[]>
+    → buildAnswer() → PersonAnswer[]
+    → verifyAnswer() → AiDevsResponse
+```
 
 ## Toolset — biblioteki pomocnicze
 
