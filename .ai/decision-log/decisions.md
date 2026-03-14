@@ -32,6 +32,15 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-005 — Monorepo kernel: packages/ai-core + packages/ai-devs-hub
+
+**Data:** 2026-03-14
+**Decyzja:** Wyciągamy reużywalne abstrakcje do `packages/ai-core` i `packages/ai-devs-hub` jako Bun workspaces. Stary `toolset/` pozostaje deprecated — nie usuwamy, nie rozszerzamy.
+**Powód:** Toolset rozrastał się bez granic. Pakiety wymuszają czyste interfejsy i umożliwiają import przez `@ai-devs/*` zamiast względnych ścieżek. Szczegóły: ADR-002.
+**Konsekwencje:** `package.json` → `"workspaces": ["packages/*"]`. `tsconfig.json` → `paths` dla `@ai-devs/ai-core` i `@ai-devs/ai-devs-hub`. Nowe zadania importują wyłącznie z pakietów.
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14

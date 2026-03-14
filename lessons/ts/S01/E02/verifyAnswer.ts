@@ -1,5 +1,4 @@
-import { sendAnswer } from "../../toolset/ai-devs.ts";
-import { saveTmpAnswer, saveFinalAnswer } from "../../toolset/save-answer.ts";
+import { sendAnswer, saveTmpAnswer, saveFinalAnswer } from "@ai-devs/ai-devs-hub";
 import type { FindhimAnswer } from "./types.ts";
 
 const EPISODE_ID = "S01E02";

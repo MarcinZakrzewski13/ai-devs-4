@@ -9,7 +9,8 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 
 - Jedno zadanie = jeden katalog `lessons/ts/S{XX}/E{YY}/`
 - Nie modyfikuj innych epizodów przy rozwiązywaniu bieżącego
-- Toolset (`lessons/ts/toolset/`) można rozszerzać, ale nie łam istniejącego API
+- Nowe zadania importują z `@ai-devs/ai-core` i `@ai-devs/ai-devs-hub` — nie z `toolset/`
+- `lessons/ts/toolset/` jest deprecated — nie rozszerzaj, nie twórz nowych plików
 
 ## Code
 
@@ -24,6 +25,7 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 - Podział modułów wg ADR-001: każdy moduł eksportuje jedną funkcję, robi jedną rzecz
 - Czyste funkcje (bez efektów ubocznych) wszędzie gdzie możliwe
 - LLM izolowany w osobnym module (np. `classifyJobs.ts`)
+- Monorepo kernel wg ADR-002: reużywalne abstrakcje w `packages/`, nie w `toolset/`
 
 ## AI Integration
 
@@ -37,9 +39,10 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 - Przed wysłaniem: `saveTmpAnswer(episodeId, task, answer)`
 - Po potwierdzeniu flagi: `saveFinalAnswer(episodeId, task, answer, response)`
 - **Nigdy** nie zapisuj `apikey` w plikach odpowiedzi
-- `answers/final/{episodeId}-{task}.json` można importować w kolejnych epizodach:
+- Cross-episode deps ładuj przez `loadFinalAnswer()`, nie bezpośrednio przez `fs`:
   ```typescript
-  import data from "../../../answers/final/S01E01-people.json" assert { type: "json" };
+  import { sendAnswer, saveTmpAnswer, saveFinalAnswer, loadFinalAnswer } from "@ai-devs/ai-devs-hub";
+  const prev = await loadFinalAnswer("S01E01", "people");
   ```
 
 ## Documentation

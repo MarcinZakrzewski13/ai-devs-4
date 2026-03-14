@@ -1,0 +1,10 @@
+{
+  "name": "@ai-devs/ai-core",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./index.ts",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "openai": "^4.73.0"
+  }
+}

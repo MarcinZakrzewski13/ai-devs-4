@@ -1,0 +1,9 @@
+{
+  "name": "@ai-devs/ai-devs-hub",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./index.ts",
+  "dependencies": {
+    "chalk": "^5.3.0"
+  }
+}

@@ -18,6 +18,12 @@
     "sourceMap": true,
     "types": [
       "bun-types"
-    ]
+    ],
+    "paths": {
+      "@ai-devs/ai-core": ["./packages/ai-core/index.ts"],
+      "@ai-devs/ai-core/*": ["./packages/ai-core/*"],
+      "@ai-devs/ai-devs-hub": ["./packages/ai-devs-hub/index.ts"],
+      "@ai-devs/ai-devs-hub/*": ["./packages/ai-devs-hub/*"]
+    }
   }
 }

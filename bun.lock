@@ -17,8 +17,27 @@
         "typescript": "^5.0.0",
       },
     },
+    "packages/ai-core": {
+      "name": "@ai-devs/ai-core",
+      "version": "0.1.0",
+      "dependencies": {
+        "chalk": "^5.3.0",
+        "openai": "^4.73.0",
+      },
+    },
+    "packages/ai-devs-hub": {
+      "name": "@ai-devs/ai-devs-hub",
+      "version": "0.1.0",
+      "dependencies": {
+        "chalk": "^5.3.0",
+      },
+    },
   },
   "packages": {
+    "@ai-devs/ai-core": ["@ai-devs/ai-core@workspace:packages/ai-core"],
+
+    "@ai-devs/ai-devs-hub": ["@ai-devs/ai-devs-hub@workspace:packages/ai-devs-hub"],
+
     "@types/node": ["@types/node@18.19.130", "", { "dependencies": { "undici-types": "~5.26.4" } }, "sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg=="],
 
     "@types/node-fetch": ["@types/node-fetch@2.6.13", "", { "dependencies": { "@types/node": "*", "form-data": "^4.0.4" } }, "sha512-QGpRVpzSaUs30JBSGPjOg4Uveu384erbHBoT1zeONvyCfwQxIkUshLAOqN/k9EjGviPRmWTTe6aH2qySWKTVSw=="],
