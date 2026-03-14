@@ -2,7 +2,7 @@ import chalk from "chalk";
 
 const HUB_URL = "https://hub.ag3nts.org/verify";
 
-type AiDevsResponse = {
+export type AiDevsResponse = {
   code: number;
   message: string;
   error?: string;

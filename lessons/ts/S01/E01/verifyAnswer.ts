@@ -1,7 +1,15 @@
 import { sendAnswer } from "../../toolset/ai-devs.ts";
+import { saveTmpAnswer, saveFinalAnswer } from "../../toolset/save-answer.ts";
 import type { PersonAnswer } from "./types.ts";
 
-/** Sends the final answer to hub.ag3nts.org and logs the result. */
+const EPISODE_ID = "S01E01";
+const TASK = "people";
+
+/** Sends the final answer to hub.ag3nts.org, saves tmp before and final after flag. */
 export async function verifyAnswer(answer: PersonAnswer[]): Promise<void> {
-  await sendAnswer("people", answer);
+  await saveTmpAnswer(EPISODE_ID, TASK, answer);
+  const response = await sendAnswer(TASK, answer);
+  if (response.code === 0 || response.message?.includes("{FLG:")) {
+    await saveFinalAnswer(EPISODE_ID, TASK, answer, response);
+  }
 }

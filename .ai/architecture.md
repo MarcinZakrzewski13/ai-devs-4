@@ -9,15 +9,24 @@ Każde zadanie polega na napisaniu skryptu TypeScript, który przetwarza dane pr
 
 ```
 ai-devs-4/
-├── .ai/                          # Dokumentacja architektury (ten folder)
+├── .ai/                          # Dokumentacja architektury
+│   ├── architecture.md           # Ten plik
+│   ├── adr/                      # Architecture Decision Records
+│   ├── decision-log/             # Lekkie meta-decyzje
+│   └── rules/
+│       └── general.md            # Reguły dla asystentów AI
 ├── .cursor/rules/                # Reguły Cursor IDE
 ├── lessons/
+│   ├── answers/                  # Wyniki zadań (gitignored — nie publikować)
+│   │   ├── tmp/                  # Efemeryczne
+│   │   └── final/                # Kanoniczne (cross-episode deps, bez apikey)
 │   ├── ts/                       # Rozwiązania w TypeScript (główne)
-│   │   ├── S01E01-*.ts           # Pliki zadań (Season/Episode)
 │   │   ├── toolset/              # Biblioteki pomocnicze (reużywalne)
 │   │   │   ├── ai-devs.ts        # Komunikacja z API hubu
+│   │   │   ├── save-answer.ts    # Persystencja wyników zadań
 │   │   │   ├── prompts/          # Szablony promptów
 │   │   │   └── scripts/          # Skrypty pomocnicze
+│   │   ├── S01/E01/              # Rozwiązania modułowe (wg ADR-001)
 │   │   └── resources/            # Dane lokalne do lekcji
 │   ├── py/                       # Rozwiązania w Pythonie (jeśli potrzebne)
 │   └── txt/                      # Symlink → E:\devel\AI-Devs\AI-Devs-4-Builders\lekcje
@@ -64,6 +73,21 @@ CSV → loadPeople() → PersonRecord[]
     → verifyAnswer() → AiDevsResponse
 ```
 
+## Cross-episode data
+
+Zadania mogą mieć zależności danych — np. S01E02 potrzebuje wyników S01E01.
+
+**Wzorzec:**
+1. `verifyAnswer.ts` wywołuje `saveFinalAnswer()` po potwierdzeniu flagi
+2. Plik ląduje w `lessons/answers/final/{episodeId}-{task}.json`
+3. Kolejny epizod może go zaimportować:
+
+```typescript
+import data from "../../../answers/final/S01E01-people.json" assert { type: "json" };
+```
+
+Plik `final/` zawiera tylko pole `answer` (nie `apikey`). Cały katalog `lessons/answers/` jest gitignored.
+
 ## Toolset — biblioteki pomocnicze
 
 ### `lessons/ts/toolset/ai-devs.ts`
@@ -95,6 +119,21 @@ await sendAnswer("people", [{ name: "Jan", surname: "Kowalski", ... }]);
 - `code < 0` — błąd, treść w `message`
 - `code === 0` — sukces, flaga w `message` lub `flag` jako `{FLG:NAZWA}`
 
+### `lessons/ts/toolset/save-answer.ts`
+
+Persystencja wyników zadań dla cross-episode dependencies.
+
+**Eksportuje:**
+
+```typescript
+saveTmpAnswer(episodeId: string, task: string, answer: unknown): Promise<string>
+saveFinalAnswer(episodeId: string, task: string, answer: unknown, response: AiDevsResponse): Promise<string>
+```
+
+- `saveTmpAnswer` — zapisuje przed wysłaniem do `answers/tmp/` (gitignored, z timestampem)
+- `saveFinalAnswer` — zapisuje po potwierdzeniu flagi do `answers/final/` (git-tracked, stable filename)
+- Nie zapisuje `apikey` — tylko `answer` + metadane + `hubResponse`
+
 ## Zmienne środowiskowe
 
 | Zmienna | Opis |
@@ -112,7 +151,10 @@ Dodawane w miarę potrzeb kolejnych lekcji (Qdrant, Neo4j, itp.)
 
 ## Dozwolone modele OpenAI
 
-Używaj wyłącznie modeli z poniższej listy. Dobierz model odpowiednio do złożoności zadania:
+Używaj wyłącznie modeli z poniższej listy.
+Jeśli potrzebny jest inny model (np. modalny, audio, image) — zaproponuj go i poproś o dopisanie do listy.
+Dodatkowe reguły dotyczące AI: `.ai/rules/general.md`.
+Dobierz model odpowiednio do złożoności zadania:
 
 | Model | Kiedy używać |
 |---|---|

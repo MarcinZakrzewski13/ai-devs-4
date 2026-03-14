@@ -65,3 +65,6 @@ bun.lockb
 # Lesson resources (private data)
 lessons/ts/resources/answers
 lessons/txt
+
+# Computed answers (private — do not publish)
+lessons/answers/

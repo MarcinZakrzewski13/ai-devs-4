@@ -61,3 +61,7 @@ OPENAI_API_KEY=...
 ```
 
 Additional keys added as needed per lesson (Qdrant, Neo4j, etc.)
+
+## AI Assistant Rules
+
+Additional rules for AI assistants (models, answer saving, secrets): `.ai/rules/general.md`
