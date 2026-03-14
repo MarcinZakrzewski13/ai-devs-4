@@ -41,6 +41,24 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-006 — Session logging dla zadań HTTP
+
+**Data:** 2026-03-14
+**Decyzja:** Zadania wystawiające serwer HTTP logują wszystkie konwersacje na dysk w katalogu `sessions/S{s}E{e}-YYYYMMDD-HHMM/{sessionID}.jsonl`. Każdy restart serwera tworzy nowy katalog z aktualnym timestampem.
+**Powód:** Bez zapisu na dysk debugging wymaga kopiowania logów z terminala. Historia sesji ginie po restarcie serwera. Wiele sesji (różne sessionID od Centrali) musi być rozróżnialne.
+**Konsekwencje:** Moduł `sessionLogger.ts` w każdym zadaniu HTTP. Format JSONL — łatwy do parsowania. Katalog `sessions/` w `.gitignore`.
+
+---
+
+## DL-007 — Detekcja flag w przychodzących wiadomościach
+
+**Data:** 2026-03-14
+**Decyzja:** `handleRequest.ts` w zadaniach konwersacyjnych skanuje każdą przychodzącą wiadomość pod kątem wzorca `{FLG:...}` i loguje wykrytą flagę z `chalk.bgGreen`.
+**Powód:** W S01E03 flaga dotarła osadzona w ostatniej wiadomości od Centrali — nie została wykryta przez `sendAnswer` (który sprawdza odpowiedź hubu, nie ruch przychodzący).
+**Konsekwencje:** Dodać `detectFlags(msg)` w handlerze żądań we wszystkich zadaniach HTTP.
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14

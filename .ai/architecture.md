@@ -84,6 +84,39 @@ CSV → loadPeople() → PersonRecord[]
     → verifyAnswer() → AiDevsResponse
 ```
 
+## Zadania HTTP — serwery proxy/webhook
+
+Zadania wymagające wystawienia publicznego endpointu (np. S01E03 proxy) uruchamiają `Bun.serve` i rejestrują URL w Centrali.
+
+**Wzorzec modułów:**
+```
+types.ts          — typy żądań/odpowiedzi + typy wiadomości sesji
+sessionStore.ts   — in-memory Map<sessionID, SessionMessage[]>
+sessionLogger.ts  — zapis konwersacji na dysk (JSONL, folder per run)
+packageApi.ts     — surowe wywołania zewnętrznego API
+tools.ts          — AiTool wrappery (z hardcode overrides jeśli potrzeba)
+systemPrompt.ts   — buildSystemPrompt()
+agentLoop.ts      — pętla tool-call z rawMessages as any (max N iteracji)
+handleRequest.ts  — glue: HTTP ↔ agentLoop ↔ sessionStore ↔ sessionLogger
+main.ts           — Bun.serve + rejestracja endpointu w Centrali
+```
+
+**Session logging:**
+- Przy starcie serwera tworzony jest katalog `sessions/S{s}E{e}-YYYYMMDD-HHMM/`
+- Każda sesja (`sessionID`) zapisywana jest do osobnego pliku `{sessionID}.jsonl`
+- Format: jeden JSON per linia `{ timestamp, sessionID, user, assistant }`
+- Ułatwia debugowanie bez konieczności czytania logów terminala
+- Każdy restart serwera tworzy nowy katalog z timestampem
+
+**Detekcja flag:**
+- `handleRequest.ts` skanuje każdą przychodzącą wiadomość pod kątem `{FLG:...}`
+- Wykryta flaga logowana z `chalk.bgGreen` — widoczna natychmiast w terminalu
+
+**Rejestracja endpointu:**
+```typescript
+await sendAnswer("proxy", { url: endpointUrl, sessionID: "s01e03" });
+```
+
 ## Cross-episode data
 
 Zadania mogą mieć zależności danych — np. S01E02 potrzebuje wyników S01E01.
@@ -196,9 +229,10 @@ Dodawane w miarę potrzeb kolejnych lekcji (Qdrant, Neo4j, itp.)
 
 ## Dozwolone modele OpenAI
 
-Używaj wyłącznie modeli z poniższej listy.
-Jeśli potrzebny jest inny model (np. modalny, audio, image) — zaproponuj go i poproś o dopisanie do listy.
-Dodatkowe reguły dotyczące AI: `.ai/rules/general.md`.
+**ZAKAZ używania modeli spoza tej listy.** Użycie nieautoryzowanego modelu (np. `gpt-4o`, `gpt-4o-mini`, `gpt-3.5-turbo`) jest błędem — należy go natychmiast poprawić.
+Jeśli do zadania potrzebny jest inny model (modalny, audio, image) — zaproponuj właścicielowi projektu i poczekaj na dopisanie do listy.
+Dodatkowe reguły: `.ai/rules/general.md`.
+
 Dobierz model odpowiednio do złożoności zadania:
 
 | Model | Kiedy używać |
@@ -206,7 +240,7 @@ Dobierz model odpowiednio do złożoności zadania:
 | `gpt-5.2` | Najtrudniejsze zadania wymagające zaawansowanego rozumowania, wielokrokowego planowania lub złożonej analizy |
 | `gpt-5.1` | Zadania złożone: wieloetapowe przetwarzanie, zaawansowana klasyfikacja, generowanie kodu |
 | `gpt-5` | Zadania standardowe wymagające dobrej jakości rozumowania i generowania |
-| `gpt-5-mini` | Zadania rutynowe: klasyfikacja, tagging, ekstrakcja danych, proste transformacje — domyślny wybór |
+| `gpt-5-mini` | Zadania rutynowe: klasyfikacja, tagging, ekstrakcja danych, proste transformacje — **domyślny wybór** |
 | `gpt-5-nano` | Zadania bardzo proste i masowe: krótkie klasyfikacje binarne, formatowanie, gdzie liczy się szybkość i koszt |
 
 ## Dokumentowanie użycia modeli w zadaniach

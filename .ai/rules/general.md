@@ -29,8 +29,10 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 
 ## AI Integration
 
-- Używaj wyłącznie modeli z listy w `architecture.md`
-- Nowy model = zaproponuj i dopisz do listy (nie dodawaj samodzielnie)
+- **UŻYWAJ WYŁĄCZNIE** modeli z listy dozwolonych w `architecture.md` (sekcja „Dozwolone modele OpenAI")
+- **ZAKAZ** używania: `gpt-4o`, `gpt-4o-mini`, `gpt-4`, `gpt-3.5-turbo` ani żadnych innych niewymienionych modeli
+- Domyślny model to `gpt-5-mini` — dobry dla większości zadań
+- Nowy model potrzebny do zadania → zaproponuj właścicielowi, poczekaj na zatwierdzenie i dopisanie do listy
 - Structured Output tam gdzie odpowiedź ma określony schemat
 - Komentarz na początku `main.ts` z listą użytych modeli i ich rolą
 

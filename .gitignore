@@ -69,3 +69,6 @@ lessons/txt
 # Computed answers (private — do not publish)
 lessons/answers/
 answers/
+
+# Session conversation logs (HTTP proxy tasks)
+lessons/ts/**/sessions/
