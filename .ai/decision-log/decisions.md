@@ -68,6 +68,22 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-009 — Refactoring S01E01–E04: zgodność z architekturą
+
+**Data:** 2026-03-15
+**Decyzja:** Wykonano systematyczny refactoring epizodów S01E01–E04 usuwający 7 naruszeń architektury. Zmiany w kolejności prereqów: (1) global, (2) E03, (3) E02, (4) E01, (5) E04.
+**Powód:** Raport zgodności `.ai/compliance-report-S01-E01-E04.md` wykrył: zakazany model `gpt-4o-mini` jako DEFAULT_MODEL, brak multimodal w `Message`, relative imports do `packages/`, `fs.readFileSync` zamiast `loadFinalAnswer()`, import z deprecated `toolset/`.
+**Konsekwencje:**
+- `packages/ai-core/model/openai.ts` — DEFAULT_MODEL zmieniony na `gpt-5-mini`
+- `packages/ai-core/model/types.ts` — `Message.content` rozszerzony do `MessageContent` (multimodal: `TextContentPart`, `ImageContentPart`)
+- `packages/geo-utils/` — nowy pakiet `@ai-devs/geo-utils` z `haversineDistanceKm()` (przeniesiony z `toolset/haversine.ts`)
+- `tsconfig.json` — dodany alias `@ai-devs/geo-utils`
+- E01/E04 — `new OpenAI()` → `createOpenAIProvider()` + `generateStructured()`
+- E02 — `fs.readFileSync` → `loadFinalAnswer()`, `toolset/haversine` → `@ai-devs/geo-utils`
+- E03 — 3 pliki: `../../../../packages/...` → `@ai-devs/ai-core` / `@ai-devs/ai-devs-hub`
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14

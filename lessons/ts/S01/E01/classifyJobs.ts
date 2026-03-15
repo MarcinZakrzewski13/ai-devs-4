@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+import { createOpenAIProvider } from "@ai-devs/ai-core";
 import type { PersonRecord, JobTag } from "./types.ts";
 
 // Structured Output — schema dla klasyfikacji zawodów.
@@ -93,32 +93,24 @@ Dostępne tagi (każdy opis może mieć wiele tagów):
 export async function classifyJobs(
   persons: PersonRecord[]
 ): Promise<Map<number, JobTag[]>> {
-  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const provider = createOpenAIProvider();
 
   // Build numbered list (id = 0-based index, displayed as 0. 1. 2. ...)
   const userContent = persons
     .map((p, i) => `${i}. ${p.job}`)
     .join("\n");
 
-  const completion = await client.beta.chat.completions.parse({
-    model: "gpt-5-mini",
+  const result = await provider.generateStructured<{
+    results: { id: number; tags: JobTag[] }[];
+  }>({
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: userContent },
     ],
-    response_format: {
-      type: "json_schema",
-      json_schema: {
-        name: "job_tags",
-        strict: true,
-        schema: JOB_TAGS_SCHEMA,
-      },
-    },
+    schema: JOB_TAGS_SCHEMA,
+    schemaName: "job_tags",
+    model: "gpt-5-mini",
   });
 
-  const parsed = completion.choices[0].message.parsed as {
-    results: { id: number; tags: JobTag[] }[];
-  };
-
-  return new Map(parsed.results.map((r) => [r.id, r.tags]));
+  return new Map(result.data.results.map((r) => [r.id, r.tags]));
 }

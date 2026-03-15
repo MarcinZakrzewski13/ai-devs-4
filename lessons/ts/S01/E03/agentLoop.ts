@@ -1,6 +1,5 @@
 import chalk from "chalk";
-import { createOpenAIProvider } from "../../../../packages/ai-core/model/openai.ts";
-import type { AiTool } from "../../../../packages/ai-core/tools/tool.ts";
+import { createOpenAIProvider, type AiTool } from "@ai-devs/ai-core";
 import type { SessionMessage } from "./types.ts";
 
 const MAX_ITERATIONS = 5;

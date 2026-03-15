@@ -10,7 +10,7 @@ import type {
   ToolCall,
 } from "./types.ts";
 
-const DEFAULT_MODEL = "gpt-4o-mini";
+const DEFAULT_MODEL = "gpt-5-mini";
 
 export const createOpenAIProvider = (apiKey?: string): ModelProvider => {
   const client = new OpenAI({ apiKey: apiKey ?? process.env.OPENAI_API_KEY });

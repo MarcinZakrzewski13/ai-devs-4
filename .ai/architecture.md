@@ -182,6 +182,12 @@ interface ModelProvider {
 }
 createOpenAIProvider(apiKey?): ModelProvider
 // helpers: buildStrictSchema, objectSchema, arraySchema, enumSchema
+
+// Typy wiadomości (multimodal):
+type TextContentPart  = { type: "text"; text: string }
+type ImageContentPart = { type: "image_url"; image_url: { url: string; detail?: "auto"|"low"|"high" } }
+type MessageContent   = string | Array<TextContentPart | ImageContentPart>
+type Message          = { role: "system"|"user"|"assistant"; content: MessageContent }
 ```
 
 **`ai-core/prompts`:**
@@ -206,6 +212,17 @@ setLogLevel(level: LogLevel)
 createEventBus(): EventBus   // typed AgentEvent
 createRunReporter(bus): { getReport(): RunReport }
 ```
+
+### `@ai-devs/geo-utils`
+
+Geometria geograficzna — obliczenia odległości na powierzchni Ziemi.
+
+**Eksportuje:**
+```typescript
+haversineDistanceKm(lat1, lon1, lat2, lon2): number  // odległość w km (formuła Haversine)
+```
+
+Użyj zamiast `lessons/ts/toolset/haversine.ts` (deprecated).
 
 ### `lessons/ts/toolset/` — DEPRECATED
 
@@ -242,6 +259,28 @@ Dobierz model odpowiednio do złożoności zadania:
 | `gpt-5` | Zadania standardowe wymagające dobrej jakości rozumowania i generowania |
 | `gpt-5-mini` | Zadania rutynowe: klasyfikacja, tagging, ekstrakcja danych, proste transformacje — **domyślny wybór** |
 | `gpt-5-nano` | Zadania bardzo proste i masowe: krótkie klasyfikacje binarne, formatowanie, gdzie liczy się szybkość i koszt |
+
+### Vision (przetwarzanie obrazów)
+
+**Wszystkie modele z listy powyżej obsługują Vision** — przyjmują obrazy jako input (Base64, URL). Źródło: [OpenAI Images and vision](https://platform.openai.com/docs/guides/vision).
+
+| Model | Vision | Uwagi |
+|---|---|---|
+| `gpt-5.2` | tak | Patch-based tokenization |
+| `gpt-5` | tak | Tile-based tokenization |
+| `gpt-5-mini` | tak | Domyślny wybór dla analizy obrazów |
+| `gpt-5-nano` | tak | Szybszy, tańszy — gdy wystarczy prosta analiza |
+| `gpt-5.1` | tak | Linia GPT-5 — obsługa vision |
+
+Do analizy obrazów (np. map, schematów, skanów dokumentów) użyj `gpt-5-mini` lub `gpt-5` — przekaż obraz w `content` jako `input_image` / `image_url`.
+
+## Pliki dokumentacji zadań
+
+Gdy zadanie wymaga pobrania dokumentacji z zewnętrznego źródła (np. hub.ag3nts.org):
+
+- **Po ściągnięciu zapisz pliki w** `./lessons/ts/resources/`
+- Zachowaj oryginalne nazwy plików (np. `zalacznik-E.md`, `dodatkowe-wagony.md`, `trasy-wylaczone.png`)
+- Pliki tekstowe umożliwiają szybkie ładowanie bez ponownego fetchu; obrazy można analizować oddzielnie (vision)
 
 ## Dokumentowanie użycia modeli w zadaniach
 

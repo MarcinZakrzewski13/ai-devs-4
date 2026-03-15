@@ -41,7 +41,7 @@ const server = Bun.serve({
 
 console.log(chalk.green(`[main] Server running on http://localhost:${PORT}`));
 
-import { sendAnswer } from "../../../../packages/ai-devs-hub/verify.ts";
+import { sendAnswer } from "@ai-devs/ai-devs-hub";
 
 const publicUrl = process.env.PUBLIC_URL;
 if (!publicUrl) {

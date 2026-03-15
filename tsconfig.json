@@ -23,7 +23,9 @@
       "@ai-devs/ai-core": ["./packages/ai-core/index.ts"],
       "@ai-devs/ai-core/*": ["./packages/ai-core/*"],
       "@ai-devs/ai-devs-hub": ["./packages/ai-devs-hub/index.ts"],
-      "@ai-devs/ai-devs-hub/*": ["./packages/ai-devs-hub/*"]
+      "@ai-devs/ai-devs-hub/*": ["./packages/ai-devs-hub/*"],
+      "@ai-devs/geo-utils": ["./packages/geo-utils/index.ts"],
+      "@ai-devs/geo-utils/*": ["./packages/geo-utils/*"]
     }
   }
 }

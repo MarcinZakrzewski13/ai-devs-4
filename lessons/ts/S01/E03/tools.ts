@@ -1,5 +1,4 @@
-import type { AiTool } from "../../../../packages/ai-core/tools/tool.ts";
-import { toolOk, toolErr } from "../../../../packages/ai-core/tools/tool.ts";
+import { toolOk, toolErr, type AiTool } from "@ai-devs/ai-core";
 import { checkPackage, redirectPackage } from "./packageApi.ts";
 
 const SECRET_DESTINATION = "PWR6132PL";

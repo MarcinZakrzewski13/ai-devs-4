@@ -14,7 +14,7 @@ import type { Suspect } from "./types.ts";
 config();
 
 // 1. Load data
-const suspects = loadSuspects();
+const suspects = await loadSuspects();
 const powerPlants = loadPowerPlants();
 console.log(chalk.blue(`[main] Loaded ${powerPlants.length} power plants`));
 

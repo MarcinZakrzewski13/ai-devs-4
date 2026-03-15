@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { haversineDistanceKm } from "../../toolset/haversine.ts";
+import { haversineDistanceKm } from "@ai-devs/geo-utils";
 import type { PowerPlant } from "./types.ts";
 import type { LocationPoint } from "./fetchLocation.ts";
 

@@ -1,6 +1,21 @@
+/** Single text part in a multimodal message. */
+export type TextContentPart = {
+  type: "text";
+  text: string;
+};
+
+/** Image passed as base64 data URL or remote URL. */
+export type ImageContentPart = {
+  type: "image_url";
+  image_url: { url: string; detail?: "auto" | "low" | "high" };
+};
+
+/** Content can be plain string (text-only) or array of parts (multimodal). */
+export type MessageContent = string | Array<TextContentPart | ImageContentPart>;
+
 export type Message = {
   role: "system" | "user" | "assistant";
-  content: string;
+  content: MessageContent;
 };
 
 export type GenerateTextInput = {
