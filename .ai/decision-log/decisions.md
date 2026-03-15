@@ -59,6 +59,15 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-008 — Hardening reguł AI IDE
+
+**Data:** 2026-03-15
+**Decyzja:** Wdrożono wielowarstwowy hardening dla Claude Code: `deny`/`ask` w `~/.claude/settings.json` + PreToolUse hook (`~/.claude/hooks/pre-tool-use.sh`) blokujący destruktywne operacje (`rm`, `dd`, `mkfs` itp.). Zaktualizowano `CLAUDE.md` — wymagane przeczytanie `.ai/rules/general.md` i `.ai/architecture.md` na początku każdej sesji.
+**Powód:** AI IDE mogą wykonywać destruktywne polecenia bez potwierdzenia. Na WSL2 utrata danych może być trudna do odwrócenia — warto zabezpieczyć się hook'iem na poziomie procesu, nie tylko instrukcją tekstową.
+**Konsekwencje:** Hook działa globalnie dla wszystkich projektów (`~/.claude/`). `rm *` → pyta, `rm -rf /` → twarda blokada (exit 2). Snapshoty WSL: `wsl --export` z PowerShell (wbudowane, bez dodatkowych narzędzi). Konfiguracja Cursor: `.cursor/rules/safety.mdc` z `alwaysApply: true`.
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14

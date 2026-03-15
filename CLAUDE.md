@@ -64,4 +64,6 @@ Additional keys added as needed per lesson (Qdrant, Neo4j, etc.)
 
 ## AI Assistant Rules
 
-Additional rules for AI assistants (models, answer saving, secrets): `.ai/rules/general.md`
+> **IMPORTANT:** At the start of every session, read the following files before proceeding with any task:
+> - `.ai/rules/general.md` — rules for AI assistants (models, answer saving, secrets)
+> - `.ai/architecture.md` — project architecture decisions and guidelines
