@@ -1,4 +1,4 @@
-import { createOpenAIProvider } from "@ai-devs/ai-core";
+import { createDefaultProvider } from "@ai-devs/ai-core";
 import type { PersonRecord, JobTag } from "./types.ts";
 
 // Structured Output — schema dla klasyfikacji zawodów.
@@ -93,7 +93,7 @@ Dostępne tagi (każdy opis może mieć wiele tagów):
 export async function classifyJobs(
   persons: PersonRecord[]
 ): Promise<Map<number, JobTag[]>> {
-  const provider = createOpenAIProvider();
+  const provider = createDefaultProvider();
 
   // Build numbered list (id = 0-based index, displayed as 0. 1. 2. ...)
   const userContent = persons

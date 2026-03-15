@@ -35,6 +35,8 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 - Nowy model potrzebny do zadania → zaproponuj właścicielowi, poczekaj na zatwierdzenie i dopisanie do listy
 - Structured Output tam gdzie odpowiedź ma określony schemat
 - Komentarz na początku `main.ts` z listą użytych modeli i ich rolą
+- **Domyślny provider: `createDefaultProvider()`** — wybiera OpenRouter (`OPEN_ROUTER_API_KEY`) lub OpenAI jako fallback
+- Bezpośredni `createOpenAIProvider()` tylko gdy OpenRouter nie obsługuje danej funkcji (np. Structured Output z `json_schema`)
 
 ## Answer Saving
 

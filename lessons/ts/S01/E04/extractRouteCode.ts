@@ -8,7 +8,7 @@
 
 import chalk from "chalk";
 import path from "path";
-import { createOpenAIProvider, type TextContentPart, type ImageContentPart } from "@ai-devs/ai-core";
+import { createDefaultProvider, type TextContentPart, type ImageContentPart } from "@ai-devs/ai-core";
 
 const MODEL = "gpt-5-mini";
 const RESOURCES_DIR = path.resolve(import.meta.dir, "../../resources");
@@ -38,7 +38,7 @@ export async function extractRouteCode(): Promise<string> {
   const imageBuffer = await Bun.file(IMAGE_PATH).arrayBuffer();
   const base64 = Buffer.from(imageBuffer).toString("base64");
 
-  const provider = createOpenAIProvider();
+  const provider = createDefaultProvider();
 
   console.log(chalk.cyan(`[extractRouteCode] Analizując obraz tras wyłączonych (${MODEL})...`));
 

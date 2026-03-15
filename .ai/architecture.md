@@ -180,7 +180,9 @@ interface ModelProvider {
   generateStructured<T>(input): Promise<StructuredResult<T>>
   callTools(input): Promise<ToolCallTurnResult>
 }
-createOpenAIProvider(apiKey?): ModelProvider
+createOpenAIProvider(apiKey?): ModelProvider      // bezpośrednie API OpenAI
+createOpenRouterProvider(apiKey?): ModelProvider  // OpenRouter (kompatybilny z OpenAI)
+createDefaultProvider(): ModelProvider            // auto: OpenRouter jeśli OPEN_ROUTER_API_KEY, fallback OpenAI
 // helpers: buildStrictSchema, objectSchema, arraySchema, enumSchema
 
 // Typy wiadomości (multimodal):
@@ -234,7 +236,8 @@ Użyj `@ai-devs/ai-devs-hub` zamiast `toolset/ai-devs.ts` i `toolset/save-answer
 | Zmienna | Opis |
 |---|---|
 | `API_KEY_AI_DEVS4` | Klucz API do hubu kursu (https://hub.ag3nts.org) |
-| `OPENAI_API_KEY` | Klucz API OpenAI |
+| `OPENAI_API_KEY` | Klucz API OpenAI (bezpośredni) |
+| `OPEN_ROUTER_API_KEY` | Klucz API OpenRouter — domyślny provider w `createDefaultProvider()` |
 
 Dodawane w miarę potrzeb kolejnych lekcji (Qdrant, Neo4j, itp.)
 

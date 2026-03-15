@@ -84,6 +84,15 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-010 — OpenRouter jako domyślny provider w ai-core
+
+**Data:** 2026-03-15
+**Decyzja:** Dodano `createOpenRouterProvider()` i `createDefaultProvider()` do `packages/ai-core/model/openai.ts`. `createDefaultProvider()` wybiera OpenRouter jeśli `OPEN_ROUTER_API_KEY` jest dostępny, w przeciwnym razie fallback na OpenAI. `createOpenAIProvider()` pozostaje bez zmian.
+**Powód:** OpenRouter daje dostęp do wielu modeli przez jeden klucz i jedno API, często taniej. Użytkownik dodał `OPEN_ROUTER_API_KEY` do `.env`.
+**Konsekwencje:** Nowe zadania używają `createDefaultProvider()` zamiast `createOpenAIProvider()`. Bezpośredni `createOpenAIProvider()` pozostaje dla przypadków wymagających funkcji niedostępnych w OpenRouter (np. ścisłe Structured Output z `json_schema`).
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14

@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { createOpenAIProvider, type AiTool } from "@ai-devs/ai-core";
+import { createDefaultProvider, type AiTool } from "@ai-devs/ai-core";
 import type { SessionMessage } from "./types.ts";
 
 const MAX_ITERATIONS = 5;
@@ -18,7 +18,7 @@ export const runAgentLoop = async ({
   tools,
   systemPrompt,
 }: AgentLoopInput): Promise<string> => {
-  const provider = createOpenAIProvider();
+  const provider = createDefaultProvider();
 
   const toolDefs = tools.map((t) => ({
     name: t.name,
