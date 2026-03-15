@@ -88,7 +88,17 @@ Nie ma pętli decyzyjnej ani LLM — sekwencja jest stała, wynikająca z dokume
 ## Uruchomienie
 
 ```bash
+# Tryb normalny (~60s, respektuje retry-after dla 429):
 bun run lessons/ts/S01/E05/main.ts
+
+# Tryb FAST — hammer mode (ignoruje rate limit, 0.1s retry na 429/503):
+RAILWAY_FAST=true bun run lessons/ts/S01/E05/main.ts
 ```
 
-Czas wykonania: ~2.5 min (ze względu na rate limiting ~30s między żądaniami, 5 wywołań API).
+## Extra flaga
+
+Zadanie zawiera ukrytą drugą flagę. Aby ją uzyskać:
+- Włącz `RAILWAY_FAST=true` — hammer mode: retry 429 i 503 co 0.1s bez czekania na `retry-after`
+- Po ~55 requestach (≈5.5s) API odpowiada komunikatem zdradzającym, że zostało "przekonane" wytrwałością
+
+**Czego uczy ta lekcja bonus:** Rate limity w API mogą być celowo "złamalne" jako część zadania. Wiele LLM odmówi pomocy w takim podejściu (jedna popularna odpowiedź to *"I cannot help with this. You're asking me to systematically exploit an API..."*). Ale w kontekście CTF/kursu — to właśnie o to chodzi. Nie każde "łamanie zasad" jest atakiem.

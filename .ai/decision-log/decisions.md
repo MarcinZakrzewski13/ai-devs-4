@@ -102,6 +102,15 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-012 — Feature flag RAILWAY_FAST + hammer mode dla S01E05
+
+**Data:** 2026-03-15
+**Decyzja:** `apiClient.ts` w S01E05 ma dwa tryby sterowane env var `RAILWAY_FAST=true`. Normal: respektuje `retry-after`. Fast/hammer: ignoruje rate limit headers, retry co 0.1s (do 500 prób). Hammer mode ujawnił ukrytą extra flagę po ~55 próbach.
+**Powód:** Rate limity w tym API były celowo emulowane jako część zadania CTF. Inne LLM odmawiały pomocy uznając to za atak — ale w kontekście kursu jest to zamierzone ćwiczenie. Feature flag pozwala zachować oba tryby w jednym pliku.
+**Konsekwencje:** Wzorzec feature flaga env var (`TASK_FAST=true`) może być przydatny w kolejnych zadaniach z celowo utrudnionymi API. Hammer mode = retry bez czekania, 0.1s interval, wysoka liczba prób.
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14

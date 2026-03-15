@@ -60,3 +60,4 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 - `.env` nigdy w git
 - `apikey` nie w plikach odpowiedzi ani w logach commitowanych
 - Klucze tylko przez `process.env.*`
+- **Wartości flag (`{FLG:...}`) wyłącznie w `./answers/`** — nigdy w dokumentacji projektu (ADR, decision-log, solution.md, komentarze w kodzie). Katalog `answers/` jest gitignored. Projekt jest publiczny — flagi w dokumentach = spoilery dla innych uczestników kursu.
