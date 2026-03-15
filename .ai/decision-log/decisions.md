@@ -93,6 +93,15 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-011 — Obowiązkowy solution.md po każdym zadaniu
+
+**Data:** 2026-03-15
+**Decyzja:** Po zakończeniu każdego zadania tworzony jest plik `solution.md` w katalogu zadania. Zawiera: czego dotyczy zadanie, czego uczy (cele dydaktyczne), jak działa rozwiązanie, dlaczego takie podejście, dane referencyjne, komendę uruchomienia. Dodatkowo, podczas analizy nowego zadania należy z góry identyfikować cele dydaktyczne.
+**Powód:** Bez dokumentacji podsumowującej trudno wrócić do rozwiązania po tygodniach i zrozumieć kontekst decyzji. Identyfikacja celów dydaktycznych pomaga unikać nadmiarowej złożoności (np. nie używać LLM tam, gdzie wystarczy deterministyka).
+**Konsekwencje:** Nowe sekcje w `architecture.md`: "Dokumentacja rozwiązania" i "Analiza zadania — identyfikacja celów dydaktycznych". Retroaktywnie utworzono `solution.md` dla S01E01–E05.
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14

@@ -285,6 +285,34 @@ Gdy zadanie wymaga pobrania dokumentacji z zewnętrznego źródła (np. hub.ag3n
 - Zachowaj oryginalne nazwy plików (np. `zalacznik-E.md`, `dodatkowe-wagony.md`, `trasy-wylaczone.png`)
 - Pliki tekstowe umożliwiają szybkie ładowanie bez ponownego fetchu; obrazy można analizować oddzielnie (vision)
 
+## Dokumentacja rozwiązania (`solution.md`)
+
+**Po zakończeniu realizacji każdego zadania** należy utworzyć plik `solution.md` w katalogu zadania (`lessons/ts/S{XX}/E{YY}/solution.md`).
+
+**Plik musi zawierać:**
+
+1. **Czego dotyczy zadanie** — opis problemu w kontekście kursu
+2. **Czego uczy zadanie** — identyfikacja umiejętności i wzorców, które dane zadanie ma przekazać (np. praca z API, prompt engineering, obsługa błędów, budowa agentów). To kluczowe dla refleksji i budowania wiedzy.
+3. **Jak działa rozwiązanie** — architektura modułów, przepływ danych, opis kluczowych komponentów
+4. **Dlaczego takie podejście** — uzasadnienie decyzji technicznych (np. dlaczego z LLM / bez LLM, wybór bibliotek, wzorce retry)
+5. **Odpowiedzi API / dane referencyjne** — przykładowe odpowiedzi, formaty, które pomagają zrozumieć kontekst
+6. **Uruchomienie** — komenda do uruchomienia rozwiązania
+
+**Cel:** Plik pełni rolę dokumentacji podsumowującej — pozwala wrócić do zadania po czasie i szybko zrozumieć co, jak i dlaczego zostało zrobione. Ułatwia też identyfikację wzorców przydatnych w kolejnych zadaniach.
+
+## Analiza zadania — identyfikacja celów dydaktycznych
+
+Podczas analizy nowego zadania (zanim zaczniesz implementację) **zidentyfikuj czego dane zadanie ma nauczyć**. Typowe kategorie:
+
+- **Interakcja z API** — discovery, rate limiting, retry, nagłówki HTTP
+- **Prompt engineering** — system prompts, few-shot, structured output
+- **Przetwarzanie danych** — parsowanie, filtrowanie, transformacja
+- **Budowa agentów** — tool calling, pętle decyzyjne, session management
+- **Multimodalność** — vision, audio, analiza obrazów/dokumentów
+- **Odporność** — error handling, fallbacki, graceful degradation
+
+Zapisz tę analizę w sekcji "Czego uczy zadanie" w `solution.md`. Pomaga to świadomie podejść do rozwiązania i uniknąć nadmiarowej złożoności (np. nie używać LLM tam, gdzie wystarczy deterministyczna logika).
+
 ## Dokumentowanie użycia modeli w zadaniach
 
 **Każde zadanie musi zawierać na początku pliku komentarz** informujący o użytych modelach i ich roli:
