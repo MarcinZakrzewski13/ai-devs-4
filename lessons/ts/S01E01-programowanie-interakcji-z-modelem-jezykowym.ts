@@ -204,4 +204,4 @@ console.log(JSON.stringify(answer, null, 2));
 // --- 6. Send answer ---
 
 await sendAnswer("people", answer);
-//{FLG:SURVIVORS}
+// [flaga zapisana w answers/]

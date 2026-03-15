@@ -38,7 +38,7 @@ reconfigure(X-01) → enter reconfigure mode
   ↓
 setstatus(X-01, RTOPEN) → set status to "open"
   ↓
-save(X-01) → exit reconfigure mode → {FLG:COUNTRYROADS}
+save(X-01) → exit reconfigure mode → flaga (zapisana w answers/)
 ```
 
 ### Kluczowy moduł: `apiClient.ts`
@@ -83,7 +83,7 @@ Nie ma pętli decyzyjnej ani LLM — sekwencja jest stała, wynikająca z dokume
 ### `getstatus` → `{ "route": "X-01", "mode": "normal", "status": "close" }`
 ### `reconfigure` → `{ "route": "X-01", "mode": "reconfigure", "message": "Reconfigure mode enabled." }`
 ### `setstatus` → `{ "route": "X-01", "mode": "reconfigure", "status": "open", "message": "Status updated." }`
-### `save` → `{ "code": 0, "message": "{FLG:COUNTRYROADS}" }`
+### `save` → `{ "code": 0, "message": "{FLG:...}" }` — flaga w polu message
 
 ## Uruchomienie
 
