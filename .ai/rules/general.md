@@ -54,6 +54,9 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 - Duże decyzje architektoniczne → nowe ADR w `.ai/adr/`
 - Małe meta-decyzje → nowy wpis w `.ai/decision-log/decisions.md`
 - Nie duplikuj reguł z `architecture.md` tutaj
+- **MCP Tools:** gdy dodajesz narzędzie do `packages/mcp-tools/tools/` →
+  obowiązkowo zaktualizuj `docs/mcp-server.md` (sekcja "Dostępne narzędzia")
+  i dodaj import w `packages/mcp-tools/tools/index.ts`
 
 ## Secrets
 

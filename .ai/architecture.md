@@ -226,6 +226,43 @@ haversineDistanceKm(lat1, lon1, lat2, lon2): number  // odległość w km (formu
 
 Użyj zamiast `lessons/ts/toolset/haversine.ts` (deprecated).
 
+### `@ai-devs/mcp-tools`
+
+Współdzielony serwer MCP (Model Context Protocol) — reużywalne narzędzia dla agentów.
+
+**Struktura:**
+```
+packages/mcp-tools/
+├── server.ts          # entry point: bun run ... [--http] [--port N]
+├── index.ts           # eksport: createMcpStdioClient, createMcpHttpClient
+├── mcp-server.ts      # logika protokołu MCP (transport-agnostyczna)
+├── mcp-client.ts      # klient MCP (stdio subprocess LUB HTTP/SSE)
+├── registry.ts        # globalny rejestr McpTool
+├── protocol/          # typy JSON-RPC 2.0, transporty stdio i SSE
+└── tools/             # narzędzia wg zadań kursu (index.ts rejestruje wszystkie)
+```
+
+**Transporty:**
+- **stdio** (domyślny): serwer = subprocess, komunikacja przez stdin/stdout
+- **HTTP/SSE**: serwer HTTP na porcie, GET /sse + POST /message
+
+**Użycie po stronie klienta (agentLoop):**
+```typescript
+import { createMcpStdioClient } from "@ai-devs/mcp-tools";
+
+const mcp = createMcpStdioClient("bun", ["run", "packages/mcp-tools/server.ts"]);
+await mcp.connect();
+const tools = await mcp.listTools(); // AiTool[] — kompatybilne z agentLoop
+mcp.disconnect();
+```
+
+**Dodawanie narzędzi:**
+1. Utwórz `packages/mcp-tools/tools/<zadanie>.ts` z McpTool + registerTool()
+2. Dodaj import w `packages/mcp-tools/tools/index.ts`
+3. **Zaktualizuj `docs/mcp-server.md`** — sekcja "Dostępne narzędzia"
+
+Pełna dokumentacja: `docs/mcp-server.md`
+
 ### `lessons/ts/toolset/` — DEPRECATED
 
 Stary toolset pozostaje dla zgodności z historią gita. Nie rozszerzaj, nie importuj w nowych zadaniach.

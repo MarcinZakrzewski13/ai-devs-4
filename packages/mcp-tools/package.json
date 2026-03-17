@@ -1,0 +1,14 @@
+{
+  "name": "@ai-devs/mcp-tools",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./index.ts",
+  "scripts": {
+    "server": "bun run server.ts",
+    "server:http": "bun run server.ts --http"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.5"
+  }
+}

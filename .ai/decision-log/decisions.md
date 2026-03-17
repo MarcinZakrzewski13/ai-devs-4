@@ -111,6 +111,21 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-013 — Współdzielony serwer MCP w packages/mcp-tools
+
+**Data:** 2026-03-17
+**Decyzja:** Dodano pakiet `@ai-devs/mcp-tools` — współdzielony serwer MCP (Model Context Protocol) dla całego projektu. Serwer obsługuje dwa transporty: stdio (domyślny, subprocess) i HTTP/SSE (serwer HTTP na porcie). Implementacja ręczna (bez SDK) — komentarze edukacyjne wyjaśniają protokół krok po kroku.
+**Powód:** Przewidywanie że finałowe zadanie kursu połączy narzędzia z wielu wcześniejszych epizodów. Współdzielony serwer MCP pozwala akumulować narzędzia (każdy epizod dodaje swój plik do `tools/`) i udostępniać je każdemu przyszłemu agentowi bez kopiowania kodu.
+**Konsekwencje:**
+- `packages/mcp-tools/` jako Bun workspace — importować przez `@ai-devs/mcp-tools`
+- `tsconfig.json` rozszerzony o path alias `@ai-devs/mcp-tools`
+- `docs/mcp-server.md` — dokumentacja protokołu, transportów, narzędzi
+- Reguła w `general.md`: przy dodaniu narzędzia → zaktualizuj `docs/mcp-server.md`
+- Narzędzia S01E03 przeniesione do `tools/packages-api.ts` (oryginalne `tools.ts` pozostaje)
+- Klient (`createMcpStdioClient`, `createMcpHttpClient`) zwraca `AiTool[]` — `agentLoop.ts` nie wymaga zmian
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14

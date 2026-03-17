@@ -25,7 +25,9 @@
       "@ai-devs/ai-devs-hub": ["./packages/ai-devs-hub/index.ts"],
       "@ai-devs/ai-devs-hub/*": ["./packages/ai-devs-hub/*"],
       "@ai-devs/geo-utils": ["./packages/geo-utils/index.ts"],
-      "@ai-devs/geo-utils/*": ["./packages/geo-utils/*"]
+      "@ai-devs/geo-utils/*": ["./packages/geo-utils/*"],
+      "@ai-devs/mcp-tools": ["./packages/mcp-tools/index.ts"],
+      "@ai-devs/mcp-tools/*": ["./packages/mcp-tools/*"]
     }
   }
 }
