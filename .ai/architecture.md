@@ -11,6 +11,8 @@ Każde zadanie polega na napisaniu skryptu TypeScript, który przetwarza dane pr
 ai-devs-4/
 ├── .ai/                          # Dokumentacja architektury
 │   ├── architecture.md           # Ten plik
+│   ├── tasks-index.md            # Indeks zadań kursowych (task.md + solution.md)
+│   ├── ai-devs-4-builders.md     # Przegląd materiałów lekcyjnych kursu
 │   ├── adr/                      # Architecture Decision Records
 │   ├── decision-log/             # Lekkie meta-decyzje
 │   └── rules/

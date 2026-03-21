@@ -4,13 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Purpose
 
-This workspace is used for solving tasks from the AI_Devs 4 Builder training course. Tasks involve LLM-related challenges with solutions submitted to https://centrala.ag3nts.org.
+Workspace do rozwiazywania zadan z kursu **AI_Devs 4 Builder**. Kazde zadanie to skrypt TypeScript przetwarzajacy dane z pomoca LLM, z odpowiedzia wysylana do Centrali (`https://hub.ag3nts.org`).
+
+## AI Assistant Rules
+
+> **IMPORTANT:** At the start of every session, read the following files before proceeding with any task:
+> - `.ai/rules/general.md` — rules for AI assistants (models, answer saving, secrets)
+> - `.ai/architecture.md` — project architecture decisions and guidelines
+> - `.ai/tasks-index.md` — index of all course tasks and solutions
 
 ## Technology Stack
 
 - **Runtime:** Bun (not npm/node)
-- **Primary language:** TypeScript
-- Additional technologies will be specified per lesson
+- **Language:** TypeScript (strict mode)
+- **Monorepo:** Bun workspaces, packages in `packages/`
 
 ## Build & Development Commands
 
@@ -23,15 +30,19 @@ bun test                 # Run tests
 ## Project Structure
 
 ```
+.ai/                     # Architecture docs, ADRs, rules, task index
+packages/                # Reusable packages (@ai-devs/*)
+│   ├── ai-core/         # ModelProvider, prompts, tools, observability
+│   ├── ai-devs-hub/     # Hub communication + answer persistence
+│   ├── geo-utils/       # Haversine distance calculations
+│   └── mcp-tools/       # Shared MCP server
 lessons/
-├── ts/                  # TypeScript solutions (main)
-│   ├── S01E01-*.ts      # Individual lesson solutions (Season/Episode naming)
-│   ├── toolset/         # Shared libraries and utilities
-│   │   ├── prompts/     # Prompt templates
-│   │   └── scripts/     # Helper scripts
+├── ts/                  # TypeScript solutions
+│   ├── S01/E01/         # Modular task solutions (one dir per episode)
+│   ├── toolset/         # [DEPRECATED] — do not extend, use @ai-devs/* instead
 │   └── resources/       # Lesson-specific data files
 ├── py/                  # Python solutions (if needed)
-└── txt/                 # Text resources per season
+└── txt/                 # Lesson materials per season (gitignored symlink)
 ```
 
 ## Coding Conventions
@@ -40,17 +51,17 @@ lessons/
 - **Variables/functions:** camelCase
 - **Types/Classes:** PascalCase
 - **Constants:** ALL_CAPS
-- Prefer functions over classes
-- Prefer types over interfaces
-- Use JSDoc for documentation
+- Prefer functions over classes, types over interfaces
 - Add trace logs with chalk for debugging
 
 ## Key Patterns
 
-- Lesson solutions follow naming: `S{season}E{episode}-{description}.ts`
-- Reusable utilities go in `lessons/ts/toolset/`
-- Use existing toolset wrappers (OpenAI, Qdrant, Neo4j) when available
-- Environment variables in `.env` file (API keys for OpenAI, AI_DEVS, etc.)
+- One task = one directory `lessons/ts/S{XX}/E{YY}/` with modular files (ADR-001)
+- `main.ts` = orchestration only, zero business logic
+- Import from `@ai-devs/ai-core` and `@ai-devs/ai-devs-hub` — not from `toolset/`
+- Default AI provider: `createDefaultProvider()` (OpenRouter with OpenAI fallback)
+- Allowed models only — see `architecture.md` section "Dozwolone modele OpenAI"
+- After solving: create `solution.md` in task directory
 
 ## Environment Variables
 
@@ -58,12 +69,7 @@ Required in `.env`:
 ```
 API_KEY_AI_DEVS4=...
 OPENAI_API_KEY=...
+OPEN_ROUTER_API_KEY=...
 ```
 
 Additional keys added as needed per lesson (Qdrant, Neo4j, etc.)
-
-## AI Assistant Rules
-
-> **IMPORTANT:** At the start of every session, read the following files before proceeding with any task:
-> - `.ai/rules/general.md` — rules for AI assistants (models, answer saving, secrets)
-> - `.ai/architecture.md` — project architecture decisions and guidelines

@@ -14,8 +14,9 @@ To initialize work in the AI Devs 4 project, read the key documentation files an
 2. Read all files in the `.ai/` directory:
    - Use Glob pattern `.ai/**/*.md` to discover files
    - Read each file found
-3. Scan current lesson files to understand progress:
-   - Use Glob pattern `lessons/ts/S*.ts` to list completed lessons
+3. Scan current lesson directories to understand progress:
+   - Use Glob pattern `lessons/ts/S*/E*/main.ts` to list completed lessons
+   - Check `.ai/tasks-index.md` for task/solution status overview
 4. Provide a briefing (see format below).
 
 ## Briefing Format
@@ -26,9 +27,9 @@ Present a concise summary in the language the user used (Polish or English), cov
 - What AI Devs 4 Builder is and how tasks work
 
 **Architecture highlights** (bullet list)
-- Key toolset utilities available (e.g. `sendAnswer` from `ai-devs.ts`)
+- Monorepo packages: `@ai-devs/ai-core` (model, prompts, tools), `@ai-devs/ai-devs-hub` (sendAnswer, saveFinalAnswer)
 - Tech stack: Bun + TypeScript, key dependencies
-- How to run solutions: `bun run lessons/ts/<file>.ts`
+- How to run solutions: `bun run lessons/ts/S{XX}/E{YY}/main.ts`
 
 **Current progress**
 - List discovered lesson files (S01E01, S01E02, etc.) with their descriptive names

@@ -126,6 +126,15 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-014 — Indeks zadań i przegląd materiałów lekcyjnych
+
+**Data:** 2026-03-21
+**Decyzja:** Utworzono `.ai/tasks-index.md` (indeks wszystkich task.md/solution.md z podsumowaniami) i `.ai/ai-devs-4-builders.md` (przegląd materiałów lekcyjnych z lessons/txt/). Przeprowadzono audyt spójności CLAUDE.md, .cursorrules i init-project skill z plikami nadrzędnymi (.ai/rules/general.md, .ai/architecture.md) — usunięto rozbieżności.
+**Powód:** Brak centralnego indeksu utrudniał orientację w postępach kursu i celach dydaktycznych zadań. CLAUDE.md zawierał przestarzałe informacje (stary URL centrali, deprecated toolset jako zalecany, monolityczna struktura plików).
+**Konsekwencje:** `tasks-index.md` wymaga aktualizacji po każdym nowym zadaniu/rozwiązaniu. `ai-devs-4-builders.md` wymaga aktualizacji po dodaniu nowych lekcji (S03–S05). CLAUDE.md i .cursorrules są teraz spójne z .ai/.
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14
