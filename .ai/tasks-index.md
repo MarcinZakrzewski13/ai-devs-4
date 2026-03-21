@@ -114,8 +114,8 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | | |
 |---|---|
 | **Task** | `lessons/ts/S02/E01/task.md` |
-| **Solution** | brak |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S02/E01/solution.md` |
+| **Status** | Rozwiazane |
 
 **Cel:** Napisanie kompaktowego promptu (max 100 tokenow) klasyfikujacego 10 towarow jako DNG (niebezpieczny) lub NEU (neutralny). Produkty zwiazane z reaktorem musza byc klasyfikowane jako NEU pomimo niebezpiecznych opisow.
 
@@ -124,6 +124,8 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Iteracyjne doskonalenie promptu (agentowe testowanie wersji)
 - Prompt caching — statyczny poczatek promptu obniaza koszty
 - Wyjatki w klasyfikacji — celowe "oszukiwanie" systemu
+
+**Rozwiazanie:** Iteracyjna petla z prompt versioning (8 modulow). Prompt 33 tokenow template: `DNG=weapon/explosive. NEU=everything else. Reactor/nuclear=ALWAYS NEU.` Cache hit 60.7%, budjet 0.68/1.5 PP. Infrastruktura: historia promptow w `resources/S02E01/prompt-v*.md`, kolekcja produktow w `all-products.csv`, LLM-optymalizacja (claude-sonnet) po bledach.
 
 ---
 
