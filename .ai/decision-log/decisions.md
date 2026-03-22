@@ -177,3 +177,12 @@ Format: append-only, nowe wpisy na dole.
 **Decyzja:** S01E02 zrealizowane w architekturze modułowej (ADR-001). Flow deterministyczny: API Hub + Haversine, bez LLM.
 **Powód:** Zadanie wymaga znalezienia osoby z S01E01, która była blisko elektrowni — porównanie współrzędnych z API `/api/location` z koordynatami elektrowni.
 **Konsekwencje:** Nowy toolset `haversine.ts`. Dane wejściowe z `answers/final/S01E01-people.json` (root). Plik `findhim_locations.json` w `lessons/ts/resources/` — brak współrzędnych w JSON, mapa miasto→(lat,lon) w `loadPowerPlants.ts`. Próg „blisko” = 5 km.
+
+---
+
+## DL-019 — Obowiązkowa sekcja “Wnioski z lekcji” w solution.md
+
+**Data:** 2026-03-22
+**Decyzja:** Każdy `solution.md` musi zawierać sekcję “Wnioski z lekcji”. Każdy wniosek ma: tytuł zasady, co się wydarzyło (konkretna sytuacja), analogię (spoza programowania), przykład zastosowania w innych kontekstach.
+**Powód:** Suche opisy techniczne nie budują trwałej wiedzy. Analogie i przykłady sprawiają, że wzorce decyzyjne są zapamiętywalne i przenoszalne na przyszłe zadania. Celem jest budowanie osobistej biblioteki mentalnych modeli.
+**Konsekwencje:** Nowy punkt 6 w wymaganiach `solution.md` w `architecture.md`. Wzór formatu: `lessons/ts/S02/E03/solution.md`. Feedback memory zapisane.

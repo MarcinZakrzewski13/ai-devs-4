@@ -358,9 +358,23 @@ Przykład: `lessons/ts/resources/S02E02/tmp/electricity-current.png`
 3. **Jak działa rozwiązanie** — architektura modułów, przepływ danych, opis kluczowych komponentów
 4. **Dlaczego takie podejście** — uzasadnienie decyzji technicznych (np. dlaczego z LLM / bez LLM, wybór bibliotek, wzorce retry)
 5. **Odpowiedzi API / dane referencyjne** — przykładowe odpowiedzi, formaty, które pomagają zrozumieć kontekst
-6. **Uruchomienie** — komenda do uruchomienia rozwiązania
+6. **Wnioski z lekcji** — kluczowe insight'y wyniesione z zadania (patrz format poniżej)
+7. **Uruchomienie** — komenda do uruchomienia rozwiązania
 
-**Cel:** Plik pełni rolę dokumentacji podsumowującej — pozwala wrócić do zadania po czasie i szybko zrozumieć co, jak i dlaczego zostało zrobione. Ułatwia też identyfikację wzorców przydatnych w kolejnych zadaniach.
+### Format sekcji "Wnioski z lekcji"
+
+Każdy wniosek to osobny podpunkt zawierający:
+
+- **Tytuł wniosku** — krótkie sformułowanie zasady (np. "LLM jako budowniczy narzędzi, nie pracownik na taśmie")
+- **Co się wydarzyło** — konkretna sytuacja z zadania, która do wniosku doprowadziła (np. "Pierwsza próba: wysłanie 890 linii do LLM. Wynik: wolne, drogie, niedeterministyczne.")
+- **Analogia** — porównanie do czegoś spoza programowania, które pomaga zapamiętać zasadę (np. "Nie zatrudniasz architekta do ręcznego murowania ścian")
+- **Przykład zastosowania** — jak ten wniosek przełożyć na inne sytuacje (np. "10 000 faktur do skategoryzowania — GPT pisze reguły raz, reguły przetwarzają dane milion razy")
+
+Celem jest budowanie mentalnej biblioteki wzorców decyzyjnych. Wnioski powinny być na tyle ogólne, by dało się je zastosować w przyszłych zadaniach, ale na tyle konkretne, by były zapamiętywalne.
+
+**Wzór:** `lessons/ts/S02/E03/solution.md` — sekcja "Wnioski z lekcji"
+
+**Cel:** Plik pełni rolę dokumentacji podsumowującej — pozwala wrócić do zadania po czasie i szybko zrozumieć co, jak i dlaczego zostało zrobione. Sekcja wniosków buduje osobistą bazę wiedzy o wzorcach decyzyjnych w pracy z AI/LLM.
 
 ## Analiza zadania — identyfikacja celów dydaktycznych
 

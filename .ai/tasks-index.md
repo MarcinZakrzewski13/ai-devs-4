@@ -154,16 +154,20 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | | |
 |---|---|
 | **Task** | `lessons/ts/S02/E03/task.md` |
-| **Solution** | brak |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S02/E03/solution.md` |
+| **Status** | Rozwiazane |
 
-**Cel:** Skondensowanie ogromnego pliku logow systemowych do 1500 tokenow, zachowujac zdarzenia istotne dla analizy awarii elektrowni. Iteracja na podstawie feedbacku od technikow.
+**Cel:** Skondensowanie ogromnego pliku logow systemowych (2137 linii) do 1500 tokenow, zachowujac zdarzenia istotne dla analizy awarii elektrowni.
 
 **Czego uczy:**
-- Przetwarzanie duzych plikow — selektywna ekstrakcja danych
-- Token counting i kompresja tekstu
+- Przetwarzanie duzych plikow — selektywna ekstrakcja i deduplikacja
+- Token counting i kompresja tekstu (roznice miedzy tokenizerami)
+- Priorytetyzacja zdarzen (CRIT > ERRO > WARN) i deterministyczne skracanie fraz
 - Iteracyjne dopracowywanie na podstawie feedbacku z API
-- Agentowe podejscie: narzedzie do przeszukiwania logow + subagent
+
+**Rozwiazanie:** 8 modulow, zero LLM. Kluczowy mechanizm: deduplikacja (890 → 55 unikalnych wpisow z licznikami xN) + deterministyczne skracanie fraz + usuwanie WARN z najnizszym priorytetem az do limitu. Margines 1350 tokenow (hub uzywa innego tokenizera, ~3% rozbieznosc). Koszt: $0.00.
+
+**Extra flag:** `{FLG:VIBECODER}` — "Tokeny zlych odpowiedzi to znaki - nadaj FLAG". Wysylanie logow z precyzyjnym token count = ASCII litery (70=F, 76=L, 65=A, 71=G). Hub przy blednych logach (code -949) zwraca `tokenCount` i `letter`. Po nadaniu 4 liter w kolejnosci → flaga.
 
 ---
 
