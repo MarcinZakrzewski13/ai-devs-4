@@ -176,8 +176,8 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | | |
 |---|---|
 | **Task** | `lessons/ts/S02/E04/task.md` |
-| **Solution** | brak |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S02/E04/solution.md` |
+| **Status** | Rozwiazane |
 
 **Cel:** Przeszukanie skrzynki mailowej przez API (operatory Gmail-like) w celu znalezienia hasla, daty ataku (YYYY-MM-DD) i kodu potwierdzenia (SEC-32znaki). Skrzynka jest aktywna — nowe wiadomosci moga wplywac.
 
@@ -187,6 +187,8 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Iteracyjne przeszukiwanie aktywnego zrodla danych
 - Agentowe podejscie z Function Calling do przeszukiwania i ekstrakcji
 
+**Rozwiazanie:** Petla agentowa z 6 narzedziami (zmail_help, zmail_inbox, zmail_search, zmail_get_message, submit_answer, finish). Agent Gemini Flash sam decyduje jakie zapytania wykonac. Typowy przebieg: 12 iteracji. Kluczowy detail: API uzywa `getMessages` z param `ids` (nie `getMessage`/`messageId`). Kod potwierdzenia pojawil sie w dwoch wariantach — agent musial przeczytac kontekst i wybrac poprawny.
+
 ---
 
 ### S02E05 — Drone (planowanie misji drona)
@@ -194,8 +196,8 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | | |
 |---|---|
 | **Task** | `lessons/ts/S02/E05/task.md` |
-| **Solution** | brak |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S02/E05/solution.md` |
+| **Status** | Rozwiazane |
 
 **Cel:** Analiza mapy terenu (PNG z siatka), odczyt dokumentacji API drona (HTML), identyfikacja sektora tamy i zaprogramowanie drona do zbombardowania tamy (nie elektrowni).
 
@@ -204,3 +206,5 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Parsowanie dokumentacji HTML z pulapkami (kolidujace nazwy funkcji)
 - Reaktywne podejscie — iteracja na podstawie bledow API
 - Dwuetapowe: analiza mapy (vision) -> generowanie instrukcji (tekst)
+
+**Rozwiazanie:** Dwuetapowe: (1) Vision gpt-5.4 analizuje mape — siatka 3x4, tama w sektorze (2,4), (2) deterministyczne budowanie 12 instrukcji drona (hardReset, kalibracja, cel, koordynaty, silnik, lot, destroy, return). Flaga za pierwsza proba. Wynik vision cachowany w tmp/. Zero LLM w fazie instrukcji — czysta funkcja. Overloaded `set()` rozroznia parametry po formacie (x,y vs engineON vs N% vs Nm vs destroy).

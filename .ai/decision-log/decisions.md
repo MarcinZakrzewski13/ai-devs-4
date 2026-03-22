@@ -186,3 +186,12 @@ Format: append-only, nowe wpisy na dole.
 **Decyzja:** Każdy `solution.md` musi zawierać sekcję “Wnioski z lekcji”. Każdy wniosek ma: tytuł zasady, co się wydarzyło (konkretna sytuacja), analogię (spoza programowania), przykład zastosowania w innych kontekstach.
 **Powód:** Suche opisy techniczne nie budują trwałej wiedzy. Analogie i przykłady sprawiają, że wzorce decyzyjne są zapamiętywalne i przenoszalne na przyszłe zadania. Celem jest budowanie osobistej biblioteki mentalnych modeli.
 **Konsekwencje:** Nowy punkt 6 w wymaganiach `solution.md` w `architecture.md`. Wzór formatu: `lessons/ts/S02/E03/solution.md`. Feedback memory zapisane.
+
+---
+
+## DL-020 — Dodanie gpt-5.4 do listy dozwolonych modeli
+
+**Data:** 2026-03-22
+**Decyzja:** Dodano `gpt-5.4` do listy dozwolonych modeli OpenAI w `architecture.md`. Przeznaczony do vision-intensive zadań wymagających precyzyjnego zliczania elementów siatki i spatial reasoning.
+**Powód:** Zadanie S02E05 sugerowało użycie `gpt-5.4` do analizy mapy z siatką. Model dał poprawny wynik za pierwszym razem (siatka 3×4, tama w sektorze 2,4). Jest droższy od dotychczasowych modeli — używać oszczędnie, z cachowaniem wyników.
+**Konsekwencje:** Nowy wiersz w tabelach "Modele OpenAI" i "Vision" w `architecture.md`. Zasada: minimalizować wywołania (max 1-2), cachować wyniki w `tmp/`, nie używać w pętlach retry.

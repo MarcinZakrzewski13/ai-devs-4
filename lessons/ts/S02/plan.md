@@ -162,67 +162,19 @@ S02/E03/
 
 ---
 
-### E04 — Mailbox (przeszukiwanie skrzynki mailowej)
+### E04 — Mailbox (przeszukiwanie skrzynki mailowej) ✅ ROZWIAZANE
 
 **Cel dydaktyczny:** API discovery, dwuetapowe pobieranie danych, agent z function calling do przeszukiwania.
 
-**Architektura modulow:**
-```
-S02/E04/
-  main.ts             — orkiestracja: discover API -> search -> extract -> submit
-  types.ts            — MailMessage, SearchQuery, MailboxAnswer
-  discoverApi.ts      — POST /api/zmail { action: "help" } -> dokumentacja API
-  searchMail.ts       — POST /api/zmail { action: "search/getInbox", ... }
-  readMail.ts         — pobranie pelnej tresci wiadomosci po ID
-  extractData.ts      — LLM: ekstrakcja daty, hasla, kodu z tresci maili
-  tools.ts            — AiTool wrappery: searchMail, readMail (dla agentLoop)
-  agentLoop.ts        — petla agentowa (wzorzec z S01E03)
-```
-
-**Podejscie:**
-1. `help` -> poznaj API (operatory wyszukiwania, formaty)
-2. Szukaj maili od Wiktora (`from:*@proton.me`)
-3. Pobierz pelna tresc kazdego maila
-4. Ekstrahuj: date (YYYY-MM-DD), password, confirmation_code (SEC-...)
-5. Jesli brak — poczekaj (mailbox aktywny) i powtorz wyszukiwanie
-6. Wyslij odpowiedz
-
-**Wariant agentowy:** Agent z narzedzami `searchMail(query)` i `readMail(id)` — sam decyduje co szukac.
-
-**Model:** `gpt-5-mini` (ekstrakcja danych z maili — proste zadanie)
-
-**Resources do pobrania:**
-- Brak statycznych zasobow — API mailboxu jest dynamiczne
+**Rozwiazanie:** Petla agentowa z 6 narzedziami, model Gemini Flash. 12 iteracji, koszt ~$0.01. Szczegoly: `S02/E04/solution.md`.
 
 ---
 
-### E05 — Drone (planowanie misji drona)
+### E05 — Drone (planowanie misji drona) ✅ ROZWIAZANE
 
 **Cel dydaktyczny:** Vision (analiza mapy), parsowanie dokumentacji HTML z pulapkami, reaktywne podejscie.
 
-**Architektura modulow:**
-```
-S02/E05/
-  main.ts             — orkiestracja: analyze map -> parse docs -> plan -> submit -> adjust
-  types.ts            — MapSector, DroneInstruction, MissionPlan
-  fetchMap.ts         — GET drone.png jako Base64
-  analyzeMap.ts       — Vision: identyfikacja sektora tamy na siatce (wiersz x kolumna)
-  fetchDocs.ts        — GET drone.html, parsowanie dokumentacji API
-  parseDocs.ts        — LLM: ekstrakcja poprawnych instrukcji (uwaga na konflikty nazw!)
-  buildMission.ts     — generowanie listy instrukcji dla drona
-  submitMission.ts    — POST /verify z instructions[], parsowanie bledow API
-```
-
-**Podejscie:**
-1. Pobierz mape (PNG) i dokumentacje (HTML)
-2. Vision: zidentyfikuj sektor tamy (intensywny kolor wody) — wiersz i kolumna
-3. Parsuj HTML docs — uwaga na celowe pulapki (kolidujace nazwy funkcji)
-4. Zbuduj sekwencje instrukcji: nawigacja do sektora + bombardowanie
-5. Wyslij do API
-6. Jesli blad — przeczytaj komunikat, dostosuj instrukcje
-7. Powtorz az do sukcesu
-
-**Model:** `gpt-5` lub `gpt-5.1` (vision — precyzyjne zliczanie wierszy/kolumn wymaga lepszego modelu)
+**Rozwiazanie:** Dwuetapowe — Vision gpt-5.4 (siatka 3x4, tama w sektorze 2,4) + deterministyczne 12 instrukcji. Flaga za pierwsza proba. Szczegoly: `S02/E05/solution.md`.
 
 **Resources do pobrania:**
 - `https://hub.ag3nts.org/dane/drone.html` -> `lessons/ts/resources/drone-api-docs.html` (statyczna dokumentacja — warto zcachowac)

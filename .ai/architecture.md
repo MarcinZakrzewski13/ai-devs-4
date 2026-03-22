@@ -298,6 +298,7 @@ Dobierz model odpowiednio do złożoności zadania:
 
 | Model | Kiedy używać |
 |---|---|
+| `gpt-5.4` | Vision-intensive: precyzyjne zliczanie elementów siatki, spatial reasoning na mapach, analiza złożonych obrazów |
 | `gpt-5.2` | Najtrudniejsze zadania wymagające zaawansowanego rozumowania, wielokrokowego planowania lub złożonej analizy |
 | `gpt-5.1` | Zadania złożone: wieloetapowe przetwarzanie, zaawansowana klasyfikacja, generowanie kodu |
 | `gpt-5` | Zadania standardowe wymagające dobrej jakości rozumowania i generowania |
@@ -310,6 +311,7 @@ Dobierz model odpowiednio do złożoności zadania:
 
 | Model | Vision | Uwagi |
 |---|---|---|
+| `gpt-5.4` | tak | Najlepsza jakość vision — precyzyjne zliczanie, spatial reasoning |
 | `gpt-5.2` | tak | Patch-based tokenization |
 | `gpt-5` | tak | Tile-based tokenization |
 | `gpt-5-mini` | tak | Domyślny wybór dla analizy obrazów |
