@@ -61,11 +61,30 @@ Polaczenia zewnetrzne: zrodlo na 3x1 LEFT, elektrownie na 1x3/2x3/3x3 RIGHT.
 - **Hardcoded target** — obraz docelowy jest statyczny (nigdy sie nie zmienia). Jednorazowa analiza i zakodowanie eliminuje polowe pracy.
 - **Walidacja przez connection count** — obroty zachowuja liczbe polaczen kabla. Porownanie counts miedzy current a target to silny test poprawnosci detekcji.
 
+## Zadanie dodatkowe: "Mapa na metapoziomie"
+
+Flaga ukryta w metadanych pliku PNG pobieranego z API (`electricity.png`).
+
+### Jak znaleziono
+
+1. **Parsowanie chunkow PNG** — plik PNG sklada sie z chunkow (IHDR, IDAT, tEXt, IEND...). Chunk `tEXt` przechowuje dowolne metadane tekstowe (klucz-wartosc).
+2. **Chunk tEXt** w `electricity.png` zawieral: `Comment FLAG:( N2IsNDYsNGMsNDcsM2EsNGQsNDUsNTQsNDEsNGMsNDUsNTYsNDUsNGMsN2Q= )`
+3. **Dekodowanie Base64** → `7b,46,4c,47,3a,4d,45,54,41,4c,45,56,45,4c,7d` (wartosci hex rozdzielone przecinkami)
+4. **Hex → ASCII** → kazda wartosc hex to kod znaku: `7b`=`{`, `46`=`F`, `4c`=`L`, `47`=`G`, `3a`=`:`, ... → `{FLG:METALEVEL}`
+
+### Czego uczy
+
+- **Steganografia w metadanych** — pliki PNG moga zawierac dowolne chunki tekstowe (`tEXt`, `iTXt`, `zTXt`) niewidoczne w podgladzie obrazu
+- **Wielowarstwowe kodowanie** — flaga zakodowana podwojnie: Base64 → hex CSV → ASCII
+- **Podejrzliwość wobec danych** — kazdy plik pobrany z API moze zawierac ukryte informacje poza widoczna trescia
+- Narzedzia: `exiftool`, `strings`, lub reczne parsowanie chunkow PNG w kodzie
+
 ## Odpowiedzi API / dane referencyjne
 
 - Reset: `GET /data/{key}/electricity.png?reset=1`
 - Obrot: `POST /verify` z `{ task: "electricity", answer: { rotate: "AxB" } }` → `{ code: 1, message: "Done" }`
-- Flaga: ostatni obrot (jesli board poprawny) → `{ code: 0, message: "{FLG:ROTATEIT}" }`
+- Flaga glowna: ostatni obrot (jesli board poprawny) → `{ code: 0, message: "{FLG:ROTATEIT}" }`
+- Flaga dodatkowa: w metadanych `tEXt` pliku `electricity.png` (zadanie "Mapa na metapoziomie")
 - Typowy przebieg: 5-7 obrotow, 0 wywolan LLM
 
 ## Koszt rozwiazania

@@ -334,6 +334,19 @@ Gdy zadanie wymaga pobrania dokumentacji z zewnętrznego źródła (np. hub.ag3n
 - Zachowaj oryginalne nazwy plików (np. `zalacznik-E.md`, `dodatkowe-wagony.md`, `trasy-wylaczone.png`)
 - Pliki tekstowe umożliwiają szybkie ładowanie bez ponownego fetchu; obrazy można analizować oddzielnie (vision)
 
+## Pliki tymczasowe zadań
+
+Pliki tymczasowe powstające podczas rozwiązywania zadania (pobrane obrazy, pośrednie wyniki, logi debugowe, próbki danych) należy przechowywać w:
+
+```
+lessons/ts/resources/S{XX}E{YY}/tmp/
+```
+
+Przykład: `lessons/ts/resources/S02E02/tmp/electricity-current.png`
+
+- **Nie usuwaj** plików tymczasowych — mogą być przydatne przy debugowaniu lub powtórnym uruchomieniu
+- Katalog `resources/` jest symlinkiem (gitignored) — pliki tymczasowe nie trafiają do repozytorium
+
 ## Dokumentacja rozwiązania (`solution.md`)
 
 **Po zakończeniu realizacji każdego zadania** należy utworzyć plik `solution.md` w katalogu zadania (`lessons/ts/S{XX}/E{YY}/solution.md`).

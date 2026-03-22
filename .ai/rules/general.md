@@ -11,6 +11,7 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 - Nie modyfikuj innych epizodów przy rozwiązywaniu bieżącego
 - Nowe zadania importują z `@ai-devs/ai-core` i `@ai-devs/ai-devs-hub` — nie z `toolset/`
 - `lessons/ts/toolset/` jest deprecated — nie rozszerzaj, nie twórz nowych plików
+- Pliki tymczasowe zadania (pobrane obrazy, pośrednie wyniki, logi) → `lessons/ts/resources/S{XX}E{YY}/tmp/` — nie usuwaj
 
 ## Code
 
@@ -65,3 +66,4 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 - `apikey` nie w plikach odpowiedzi ani w logach commitowanych
 - Klucze tylko przez `process.env.*`
 - **Wartości flag (`{FLG:...}`) wyłącznie w `./answers/`** — nigdy w dokumentacji projektu (ADR, decision-log, solution.md, komentarze w kodzie). Katalog `answers/` jest gitignored. Projekt jest publiczny — flagi w dokumentach = spoilery dla innych uczestników kursu.
+- **Flagi dodatkowe (extra/secret):** zapisuj w `answers/final/extra-flags.md` (tabela: zadanie, zagadka, flaga, sposób zdobycia). Opis metody może też trafić do `solution.md` danego zadania.

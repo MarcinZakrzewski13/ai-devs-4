@@ -162,6 +162,15 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-018 — Pliki tymczasowe zadań w resources/S{XX}E{YY}/tmp/
+
+**Data:** 2026-03-22
+**Decyzja:** Pliki tymczasowe powstające podczas rozwiązywania zadania (pobrane obrazy, pośrednie wyniki, logi) przechowywane w `lessons/ts/resources/S{XX}E{YY}/tmp/`. Nie usuwać — mogą być przydatne przy debugowaniu.
+**Powód:** Dotychczas pliki tymczasowe trafiały do `/tmp` (gubiły się po restarcie) lub do katalogu zadania (zaśmiecały repo). Dedykowane miejsce w `resources/` (gitignored symlink) rozwiązuje oba problemy.
+**Konsekwencje:** Reguła w `architecture.md` (sekcja "Pliki tymczasowe zadań") i `general.md` (Scope). Feedback memory zapisane.
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14
