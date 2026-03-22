@@ -135,6 +135,33 @@ Format: append-only, nowe wpisy na dole.
 
 ---
 
+## DL-015 — Pixelowa detekcja kabli zamiast Vision w S02E02
+
+**Data:** 2026-03-22
+**Decyzja:** W S02E02 (puzzle kabli 3x3) zamiast Vision LLM użyto deterministycznej analizy pikseli — skanowanie czarnych pasków na krawędziach komórek. Vision models (Gemini Flash, GPT-5-mini) testowane na kadrowanych i pełnych obrazach dawały niespójne wyniki.
+**Powód:** Kable to grube czarne paski (~30px) na jasnym tle. Skanowanie gestości czarnych pikseli (>30% = połączenie) jest deterministyczne, powtarzalne, i darmowe. Vision models myliły typy kabli (np. T-junction vs straight), co uniemożliwiało obliczenie obrotów.
+**Konsekwencje:** Moduł `detect-cables.ts` z auto-detekcją linii grida. Wzorzec: gdy obraz ma prosty, binarny schemat (czarno-białe linie), analiza pikseli > Vision LLM. Koszt rozwiązania: $0.00.
+
+---
+
+## DL-016 — Obowiązkowy szacunek kosztów w planach zadań
+
+**Data:** 2026-03-22
+**Decyzja:** Każdy plan implementacji zadania musi zawierać tabelę z szacunkiem kosztów (operacja, ilość wywołań, model, koszt USD). Dodano sekcję "Szacunek kosztów w planie zadania" do `architecture.md` i regułę w `general.md`.
+**Powód:** Świadome zarządzanie budżetem LLM — unikanie nadmiarowych wywołań i wybór odpowiedniego modelu do złożoności zadania.
+**Konsekwencje:** Feedback memory zapisane. Reguła w `.ai/rules/general.md` i `.ai/architecture.md`.
+
+---
+
+## DL-017 — Gemini Flash jako dozwolony model OpenRouter
+
+**Data:** 2026-03-22
+**Decyzja:** Dodano `google/gemini-3-flash-preview` do listy dozwolonych modeli w `architecture.md` w nowej sekcji "Modele OpenRouter (non-OpenAI)". Model dostępny wyłącznie przez `createOpenRouterProvider()`.
+**Powód:** Sugerowany przez zadanie S02E02 do Vision-intensive analizy. Choć w tym zadaniu nie był potrzebny (pixelowa detekcja wystarczyła), model może być użyteczny w przyszłych zadaniach wymagających analizy grid/puzzle.
+**Konsekwencje:** Nowa sekcja w `architecture.md`. Modele OpenRouter nie są dostępne przez `createDefaultProvider()` ani `createOpenAIProvider()` — wymagają jawnego `createOpenRouterProvider()`.
+
+---
+
 ## DL-004 — Rozwiązanie S01E02 (findhim)
 
 **Data:** 2026-03-14

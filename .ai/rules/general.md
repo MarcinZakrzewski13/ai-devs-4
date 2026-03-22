@@ -37,6 +37,7 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 - Komentarz na początku `main.ts` z listą użytych modeli i ich rolą
 - **Domyślny provider: `createDefaultProvider()`** — wybiera OpenRouter (`OPEN_ROUTER_API_KEY`) lub OpenAI jako fallback
 - Bezpośredni `createOpenAIProvider()` tylko gdy OpenRouter nie obsługuje danej funkcji (np. Structured Output z `json_schema`)
+- **Szacunek kosztów:** każdy plan implementacji zadania musi zawierać tabelę z szacunkiem kosztów (model, ilość wywołań, koszt) — szczegóły w `architecture.md`
 
 ## Answer Saving
 

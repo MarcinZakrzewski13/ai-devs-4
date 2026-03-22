@@ -134,16 +134,18 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | | |
 |---|---|
 | **Task** | `lessons/ts/S02/E02/task.md` |
-| **Solution** | brak |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S02/E02/solution.md` |
+| **Status** | Rozwiazane |
 
 **Cel:** Rozwiazanie puzzle na planszy 3x3 — obrot segmentow kabli o 90 stopni, aby polaczyc 3 elektrownie ze zrodlem zasilania awaryjnego w zamkniety obwod.
 
 **Czego uczy:**
-- Vision — interpretacja obrazu PNG z siatka kabli
-- Spatial reasoning — planowanie obrotow na podstawie stanu vs cel
-- Podejscie agentowe z Function Calling do iteracyjnego rozwiazywania
-- Weryfikacja wizualna po kazdej partii obrotow
+- Deterministyczna analiza obrazu — detekcja kabli przez skanowanie pikseli zamiast Vision LLM
+- Automatyczne wykrywanie siatki — detekcja linii grida przez gestosci czarnych pikseli
+- Spatial reasoning — obliczanie obrotow na podstawie porownania stanow
+- Walidacja obwodu — sprawdzanie obustronnosci polaczen miedzy komorkami
+
+**Rozwiazanie:** 7 modulow, zero LLM. Kluczowy mechanizm: `detect-cables.ts` skanuje piksele na krawediach komorek (czarne paski = kable, >30% = polaczenie). Target state hardcoded po jednorazowej analizie `solved_electricity.png`. `compute-rotations.ts` oblicza obroty CW (0-3 per komorka). Typowy przebieg: 5-7 obrotow API. Koszt: $0.00 (brak LLM). Uwaga: Vision models (Gemini Flash, GPT-5-mini) testowane ale dawaly niespojne wyniki — pixelowa detekcja okazala sie niezawodna.
 
 ---
 

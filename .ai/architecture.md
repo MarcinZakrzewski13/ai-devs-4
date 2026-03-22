@@ -286,11 +286,13 @@ Dodawane w miarę potrzeb kolejnych lekcji (Qdrant, Neo4j, itp.)
 - **Język:** TypeScript (strict mode, ESNext, moduleResolution: bundler)
 - **Kluczowe zależności:** `openai`, `axios`, `chalk`, `dotenv`
 
-## Dozwolone modele OpenAI
+## Dozwolone modele
 
 **ZAKAZ używania modeli spoza tej listy.** Użycie nieautoryzowanego modelu (np. `gpt-4o`, `gpt-4o-mini`, `gpt-3.5-turbo`) jest błędem — należy go natychmiast poprawić.
 Jeśli do zadania potrzebny jest inny model (modalny, audio, image) — zaproponuj właścicielowi projektu i poczekaj na dopisanie do listy.
 Dodatkowe reguły: `.ai/rules/general.md`.
+
+### Modele OpenAI
 
 Dobierz model odpowiednio do złożoności zadania:
 
@@ -315,6 +317,14 @@ Dobierz model odpowiednio do złożoności zadania:
 | `gpt-5.1` | tak | Linia GPT-5 — obsługa vision |
 
 Do analizy obrazów (np. map, schematów, skanów dokumentów) użyj `gpt-5-mini` lub `gpt-5` — przekaż obraz w `content` jako `input_image` / `image_url`.
+
+### Modele OpenRouter (non-OpenAI)
+
+Modele dostępne wyłącznie przez OpenRouter (`createOpenRouterProvider()`):
+
+| Model | Kiedy używać |
+|---|---|
+| `google/gemini-3-flash-preview` | Vision-intensive zadania: analiza obrazów grid/puzzle, OCR z obrazów, spatial reasoning |
 
 ## Pliki dokumentacji zadań
 
@@ -351,6 +361,19 @@ Podczas analizy nowego zadania (zanim zaczniesz implementację) **zidentyfikuj c
 - **Odporność** — error handling, fallbacki, graceful degradation
 
 Zapisz tę analizę w sekcji "Czego uczy zadanie" w `solution.md`. Pomaga to świadomie podejść do rozwiązania i uniknąć nadmiarowej złożoności (np. nie używać LLM tam, gdzie wystarczy deterministyczna logika).
+
+## Szacunek kosztów w planie zadania
+
+**Każdy plan implementacji zadania musi zawierać tabelę z szacunkiem kosztów** wywołań LLM/API:
+
+| Kolumna | Opis |
+|---------|------|
+| Operacja | Co robimy (np. "Vision: analiza 9 komórek") |
+| Ilość wywołań | Liczba requestów do modelu/API |
+| Model | Nazwa modelu |
+| Koszt szacunkowy | Przybliżony koszt w USD |
+
+Tabela powinna zawierać wiersz podsumowania z łącznym kosztem typowego scenariusza. Celem jest świadome zarządzanie budżetem i unikanie nadmiarowych wywołań.
 
 ## Dokumentowanie użycia modeli w zadaniach
 
