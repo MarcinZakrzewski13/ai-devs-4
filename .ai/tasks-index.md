@@ -208,3 +208,25 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Dwuetapowe: analiza mapy (vision) -> generowanie instrukcji (tekst)
 
 **Rozwiazanie:** Dwuetapowe: (1) Vision gpt-5.4 analizuje mape — siatka 3x4, tama w sektorze (2,4), (2) deterministyczne budowanie 12 instrukcji drona (hardReset, kalibracja, cel, koordynaty, silnik, lot, destroy, return). Flaga za pierwsza proba. Wynik vision cachowany w tmp/. Zero LLM w fazie instrukcji — czysta funkcja. Overloaded `set()` rozroznia parametry po formacie (x,y vs engineON vs N% vs Nm vs destroy).
+
+---
+
+## Sezon 3
+
+### S03E01 — Evaluation (anomalie w danych sensorow)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S03/E01/task.md` |
+| **Solution** | `lessons/ts/S03/E01/solution.md` |
+| **Status** | Rozwiazane |
+
+**Cel:** Analiza 9999 plikow JSON z odczytami sensorow elektrowni jadrowej. Znalezienie anomalii: dane poza zakresem, nieaktywne sensory z wartoscia != 0, notatki operatora niezgodne z danymi.
+
+**Czego uczy:**
+- Hybrydowe przetwarzanie — deterministyczny kod dla danych liczbowych, LLM tylko dla interpretacji jezyka naturalnego
+- Optymalizacja kosztow LLM — deduplikacja (9953 plikow → 1993 unikalnych notatek), minimalizacja output tokens
+- Limitacje keyword matching — negacje w jezyku naturalnym wymagaja LLM
+- Ewaluacja danych — budowanie regul walidacyjnych na podstawie specyfikacji
+
+**Rozwiazanie:** Dwufazowe: (1) deterministyczna detekcja anomalii danych (zakresy + nieaktywne sensory) → 46 plikow, (2) LLM klasyfikacja deduplikowanych notatek operatora (gpt-5-nano, Structured Output) → 6 plikow z falszywymi raportami bledow. Razem 52 anomalie. Koszt LLM: ~$0.04. Skrypty eksploracyjne zachowane w analysis-tools/.

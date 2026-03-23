@@ -64,7 +64,8 @@ lessons/ts/
 │   │   ├── filterCandidates.ts  # filtracja deterministyczna
 │   │   ├── classifyJobs.ts      # integracja z LLM (Structured Output)
 │   │   ├── buildAnswer.ts       # transformacja danych → payload odpowiedzi
-│   │   └── verifyAnswer.ts      # wysyłka + logowanie wyniku
+│   │   ├── verifyAnswer.ts      # wysyłka + logowanie wyniku
+│   │   └── analysis-tools/      # skrypty eksploracyjne (analiza danych, rozkłady, keyword matching)
 │   └── E02/
 │       └── ...
 └── toolset/                     # biblioteki reużywalne (wspólne dla wszystkich zadań)

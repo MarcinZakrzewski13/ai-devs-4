@@ -195,3 +195,12 @@ Format: append-only, nowe wpisy na dole.
 **Decyzja:** Dodano `gpt-5.4` do listy dozwolonych modeli OpenAI w `architecture.md`. Przeznaczony do vision-intensive zadań wymagających precyzyjnego zliczania elementów siatki i spatial reasoning.
 **Powód:** Zadanie S02E05 sugerowało użycie `gpt-5.4` do analizy mapy z siatką. Model dał poprawny wynik za pierwszym razem (siatka 3×4, tama w sektorze 2,4). Jest droższy od dotychczasowych modeli — używać oszczędnie, z cachowaniem wyników.
 **Konsekwencje:** Nowy wiersz w tabelach "Modele OpenAI" i "Vision" w `architecture.md`. Zasada: minimalizować wywołania (max 1-2), cachować wyniki w `tmp/`, nie używać w pętlach retry.
+
+---
+
+## DL-021 — Obowiązkowy katalog analysis-tools/ w zadaniach
+
+**Data:** 2026-03-23
+**Decyzja:** Skrypty ad-hoc użyte do eksploracji i analizy danych zadania muszą być zachowane w `lessons/ts/S{XX}/E{YY}/analysis-tools/`. Nie są częścią runtime — dokumentują proces analityczny.
+**Powód:** Bez wiedzy o tym, jak przeprowadzono klasyfikację, oczyszczenie i normalizację danych wejściowych, wartość ucząca zadania znacząco spada. Proces myślowy i eksploracja danych są integralną częścią rozwiązania.
+**Konsekwencje:** Nowa reguła w `.ai/rules/general.md` (Scope) i nowy katalog w strukturze zadań w `.ai/architecture.md`. Retroaktywnie zastosowane w S03E01 (3 skrypty Python: rozkład sensorów, detekcja anomalii, keyword matching notatek).

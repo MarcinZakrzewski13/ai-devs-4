@@ -12,6 +12,7 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 - Nowe zadania importują z `@ai-devs/ai-core` i `@ai-devs/ai-devs-hub` — nie z `toolset/`
 - `lessons/ts/toolset/` jest deprecated — nie rozszerzaj, nie twórz nowych plików
 - Pliki tymczasowe zadania (pobrane obrazy, pośrednie wyniki, logi) → `lessons/ts/resources/S{XX}E{YY}/tmp/` — nie usuwaj
+- Skrypty ad-hoc użyte do eksploracji/analizy danych zadania → `lessons/ts/S{XX}/E{YY}/analysis-tools/` — dokumentują proces analityczny (nie są częścią runtime)
 
 ## Code
 
