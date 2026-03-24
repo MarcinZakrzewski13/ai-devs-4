@@ -204,3 +204,12 @@ Format: append-only, nowe wpisy na dole.
 **Decyzja:** Skrypty ad-hoc użyte do eksploracji i analizy danych zadania muszą być zachowane w `lessons/ts/S{XX}/E{YY}/analysis-tools/`. Nie są częścią runtime — dokumentują proces analityczny.
 **Powód:** Bez wiedzy o tym, jak przeprowadzono klasyfikację, oczyszczenie i normalizację danych wejściowych, wartość ucząca zadania znacząco spada. Proces myślowy i eksploracja danych są integralną częścią rozwiązania.
 **Konsekwencje:** Nowa reguła w `.ai/rules/general.md` (Scope) i nowy katalog w strukturze zadań w `.ai/architecture.md`. Retroaktywnie zastosowane w S03E01 (3 skrypty Python: rozkład sensorów, detekcja anomalii, keyword matching notatek).
+
+---
+
+## DL-022 — Claude Sonnet 4.6 jako dozwolony model OpenRouter
+
+**Data:** 2026-03-24
+**Decyzja:** Dodano `anthropic/claude-sonnet-4-6` do listy dozwolonych modeli OpenRouter w `architecture.md`. Przeznaczony do agentowych zadań wymagających dobrego rozumowania, śledzenia kontekstu i adaptacji do nieznanych API.
+**Powód:** Zadanie S03E02 (debugowanie firmware na VM przez Shell API) wymagało modelu zdolnego do wielokrokowej eksploracji nieznanych komend, diagnozowania błędów i naprawy konfiguracji. Task hints wprost sugerowały ten model. GPT-5-mini mógłby utknąć w pętli przy niestandardowym shellu.
+**Konsekwencje:** Nowy wiersz w tabeli "Modele OpenRouter (non-OpenAI)" w `architecture.md`. Model dostępny przez `createDefaultProvider()` (bo OpenRouter jest domyślnym providerem). Koszt: $3/$15 per 1M tokens — droższy od Gemini Flash, używać tylko gdy potrzebne dobre rozumowanie agentowe.

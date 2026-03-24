@@ -230,3 +230,23 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Ewaluacja danych — budowanie regul walidacyjnych na podstawie specyfikacji
 
 **Rozwiazanie:** Dwufazowe: (1) deterministyczna detekcja anomalii danych (zakresy + nieaktywne sensory) → 46 plikow, (2) LLM klasyfikacja deduplikowanych notatek operatora (gpt-5-nano, Structured Output) → 6 plikow z falszywymi raportami bledow. Razem 52 anomalie. Koszt LLM: ~$0.04. Skrypty eksploracyjne zachowane w analysis-tools/.
+
+---
+
+### S03E02 — Firmware (debugowanie firmware na VM)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S03/E02/task.md` |
+| **Solution** | `lessons/ts/S03/E02/solution.md` |
+| **Status** | Rozwiazane |
+
+**Cel:** Uruchomienie binarki `/opt/firmware/cooler/cooler.bin` na ograniczonej maszynie wirtualnej dostepnej przez Shell API. VM ma niestandardowy shell, ograniczenia bezpieczenstwa (ban za .gitignore), lock file i zepsuta konfiguracje.
+
+**Czego uczy:**
+- Petla agentowa z Function Calling do interaktywnego debugowania
+- Eksploracja nieznanych API — zaczynaj od `help`, nie zakladaj komend
+- Respektowanie ograniczen srodowiska (.gitignore = nie czytaj, ban = czekaj)
+- Wielokrokowe rozwiazywanie problemow: haslo → lock file → konfiguracja → uruchomienie
+
+**Rozwiazanie:** Petla agentowa (Claude Sonnet 4.6, max 30 iteracji) z 3 narzedziami (shell_exec, submit_answer, finish). Agent sam eksploruje VM: poznaje komendy, znajduje haslo w `/home/operator/notes/pass.txt`, usuwa lock file, naprawia settings.ini (odkomentowanie SAFETY_CHECK, wylaczenie test_mode, wlaczenie cooling), uruchamia firmware i wyciaga kod ECCS. Typowy przebieg: 27 iteracji (z czego ~8 to czekanie na ban). Koszt: ~$0.20.

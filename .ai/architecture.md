@@ -328,6 +328,7 @@ Modele dostępne wyłącznie przez OpenRouter (`createOpenRouterProvider()`):
 | Model | Kiedy używać |
 |---|---|
 | `google/gemini-3-flash-preview` | Vision-intensive zadania: analiza obrazów grid/puzzle, OCR z obrazów, spatial reasoning |
+| `anthropic/claude-sonnet-4-6` | Agentowe zadania wymagające dobrego rozumowania, śledzenia kontekstu i adaptacji do nieznanych API |
 
 ## Pliki dokumentacji zadań
 
