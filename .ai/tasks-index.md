@@ -250,3 +250,23 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Wielokrokowe rozwiazywanie problemow: haslo → lock file → konfiguracja → uruchomienie
 
 **Rozwiazanie:** Petla agentowa (Claude Sonnet 4.6, max 30 iteracji) z 3 narzedziami (shell_exec, submit_answer, finish). Agent sam eksploruje VM: poznaje komendy, znajduje haslo w `/home/operator/notes/pass.txt`, usuwa lock file, naprawia settings.ini (odkomentowanie SAFETY_CHECK, wylaczenie test_mode, wlaczenie cooling), uruchamia firmware i wyciaga kod ECCS. Typowy przebieg: 27 iteracji (z czego ~8 to czekanie na ban). Koszt: ~$0.20.
+
+---
+
+### S03E03 — Reactor (nawigacja robota)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S03/E03/task.md` |
+| **Solution** | `lessons/ts/S03/E03/solution.md` |
+| **Status** | Rozwiazane |
+
+**Cel:** Doprowadzenie robota przez plansze 7x5 z ruchomymi blokami reaktora. Robot porusza sie po dolnym wierszu od kolumny 1 do 7. Komendy: start, right, left, wait.
+
+**Czego uczy:**
+- Reagowanie na zmieniajacy sie stan otoczenia (kontekstowy feedback z API)
+- Predykcja stanu — decyzje na podstawie przyszlych pozycji blokow, nie obecnych
+- Discovery API — odkrywanie formatu odpowiedzi przez eksperyment
+- Deterministyczna petla decyzyjna bez LLM
+
+**Rozwiazanie:** 5 modulow, zero LLM. Petla gry: sendCommand → parseState → decideCommand → repeat. Algorytm 1-step lookahead: predykcja pozycji blokow po nastepnym ruchu, heurystyka right > wait > left. Discovery phase: start + 6x wait ujawnilo mechanike ruchu blokow (odwracanie kierunku na granicach). Rozwiazanie w 8 krokach. Koszt: $0.00.
