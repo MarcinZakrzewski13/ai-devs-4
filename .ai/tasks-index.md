@@ -270,3 +270,24 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Deterministyczna petla decyzyjna bez LLM
 
 **Rozwiazanie:** 5 modulow, zero LLM. Petla gry: sendCommand → parseState → decideCommand → repeat. Algorytm 1-step lookahead: predykcja pozycji blokow po nastepnym ruchu, heurystyka right > wait > left. Discovery phase: start + 6x wait ujawnilo mechanike ruchu blokow (odwracanie kierunku na granicach). Rozwiazanie w 8 krokach. Koszt: $0.00.
+
+---
+
+### S03E04 — Negotiations (budowanie narzedzi dla agenta)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S03/E04/task.md` |
+| **Solution** | `lessons/ts/S03/E04/solution.md` |
+| **Status** | Rozwiazane |
+
+**Cel:** Przygotowanie 1-2 narzedzi HTTP dla agenta Centrali, ktory szuka miast sprzedajacych komponenty elektroniczne do turbiny wiatrowej. Agent wysyla zapytania w jezyku naturalnym. Musi znalezc miasta oferujace WSZYSTKIE 3 potrzebne produkty jednoczesnie.
+
+**Czego uczy:**
+- Projektowanie narzedzi (API) dla zewnetrznego agenta AI — opisy decyduja o skutecznosci
+- Guard LLM jako warstwa bezpieczenstwa (walidacja + detekcja prompt injection)
+- LLM normalizacja jezyka naturalnego → structured data (Structured Output)
+- Trojwarstwowa architektura: guard → normalizer → deterministic search engine
+- Ograniczenia komunikacji agent↔narzedzie (500B limit, max 10 krokow)
+
+**Rozwiazanie:** 8 modulow, 2 endpointy HTTP. Endpoint 1 `/search-items`: szuka produktow w katalogu 2136 komponentow (keyword AND match z OR fallback). Endpoint 2 `/find-cities`: lookup miast dla danego kodu produktu (connections.csv → cities.csv). Kazdy request przechodzi: guard LLM (gpt-5-nano) → normalizer LLM (gpt-5-mini, Structured Output) → deterministyczny silnik. CSV dane ladowane in-memory z indeksami Map. Koszt: ~$0.004 per run. Kluczowy detail: opis narzedzia z "Use these codes with the find-cities tool" laczy oba endpointy w pipeline dla agenta.
