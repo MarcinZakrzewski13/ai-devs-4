@@ -26,3 +26,4 @@ Przykład: `ADR-001-modular-task-architecture.md`
 | [ADR-001](ADR-001-modular-task-architecture.md) | Modularna architektura zadań | Accepted |
 | [ADR-002](ADR-002-monorepo-kernel.md) | Monorepo kernel — packages/ai-core + packages/ai-devs-hub | Accepted |
 | [ADR-003](ADR-003-mcp-tools-shared-server.md) | Współdzielony serwer MCP dla narzędzi agentowych | Accepted |
+| [ADR-004](ADR-004-two-phase-agent-with-knowledge-base.md) | Dwufazowa architektura agentowa z knowledge base | Accepted |

@@ -291,3 +291,25 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Ograniczenia komunikacji agent↔narzedzie (500B limit, max 10 krokow)
 
 **Rozwiazanie:** 8 modulow, 2 endpointy HTTP. Endpoint 1 `/search-items`: szuka produktow w katalogu 2136 komponentow (keyword AND match z OR fallback). Endpoint 2 `/find-cities`: lookup miast dla danego kodu produktu (connections.csv → cities.csv). Kazdy request przechodzi: guard LLM (gpt-5-nano) → normalizer LLM (gpt-5-mini, Structured Output) → deterministyczny silnik. CSV dane ladowane in-memory z indeksami Map. Koszt: ~$0.004 per run. Kluczowy detail: opis narzedzia z "Use these codes with the find-cities tool" laczy oba endpointy w pipeline dla agenta.
+
+---
+
+### S03E05 — Save Them (planowanie trasy)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S03/E05/task.md` |
+| **Solution** | `lessons/ts/S03/E05/solution.md` |
+| **Status** | Rozwiazane |
+
+**Cel:** Zaplanowanie optymalnej trasy dla wyslannika na mapie 10x10 do miasta Skolwin. Mapa z przeszkodami (skaly, woda, drzewa), 4 pojazdy z roznym spalaniem, budzet 10 fuel + 10 food. Narzedzia API odkrywane przez meta-endpoint `toolsearch`.
+
+**Czego uczy:**
+- API discovery przez agenta LLM — toolsearch jako meta-narzedzie, agent sam odkrywa endpointy
+- Knowledge base pattern — agent zapisuje fakty, wstrzykiwane do promptu kolejnego agenta
+- LLM jako decision-maker — planner analizuje mape, porownuje pojazdy, podejmuje decyzje
+- Algorytm jako narzedzie agenta — BFS pathfinder opakowany jako AiTool, nie hardcoded
+
+**Rozwiazanie:** Dwufazowa architektura agentowa. Faza 1: Discovery agent (gpt-5-mini, ~17 iteracji) odkrywa 3 endpointy, zbiera wiedzę do KnowledgeBase. Faza 2: knowledge extraction (parser). Faza 3: Route planner agent (gpt-5-mini, ~15 iteracji) z BFS jako narzedziem — sam wybiera rocket + dismount, submituje main route i beaver route. Koszt: ~$0.02.
+
+**Extra flag:** `{FLG:ABEAVER}` — "Tam sa bobry!" Planner agent rozumuje o bobrach z knowledge base, szuka tras do polnocnej wody, znajduje (1,6) przy strumieniu. "You found beavers by the stream!"

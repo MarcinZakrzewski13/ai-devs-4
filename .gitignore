@@ -72,3 +72,6 @@ answers/
 
 # Session conversation logs (HTTP proxy tasks)
 lessons/ts/**/sessions/
+
+# API key lookup (local convenience file)
+lookup

@@ -213,3 +213,12 @@ Format: append-only, nowe wpisy na dole.
 **Decyzja:** Dodano `anthropic/claude-sonnet-4-6` do listy dozwolonych modeli OpenRouter w `architecture.md`. Przeznaczony do agentowych zadań wymagających dobrego rozumowania, śledzenia kontekstu i adaptacji do nieznanych API.
 **Powód:** Zadanie S03E02 (debugowanie firmware na VM przez Shell API) wymagało modelu zdolnego do wielokrokowej eksploracji nieznanych komend, diagnozowania błędów i naprawy konfiguracji. Task hints wprost sugerowały ten model. GPT-5-mini mógłby utknąć w pętli przy niestandardowym shellu.
 **Konsekwencje:** Nowy wiersz w tabeli "Modele OpenRouter (non-OpenAI)" w `architecture.md`. Model dostępny przez `createDefaultProvider()` (bo OpenRouter jest domyślnym providerem). Koszt: $3/$15 per 1M tokens — droższy od Gemini Flash, używać tylko gdy potrzebne dobre rozumowanie agentowe.
+
+---
+
+## DL-023 — Learning Goals: LLM-first approach w rozwiązaniach zadań
+
+**Data:** 2026-03-27
+**Decyzja:** Dodano sekcję "Learning Goals" do `.ai/rules/general.md`. Rozwiązania zadań muszą demonstrować użycie LLM jako centralnego elementu decyzyjnego. Algorytmy opakowujemy jako tools dla agenta. Decyzje o strategii podejmuje LLM, nie if/else w kodzie.
+**Powód:** Celem kursu jest nauka efektywnego wykorzystywania LLM w IT. Rozwiązanie czysto deterministyczne (np. BFS bez agenta) nie uczy niczego o programowaniu z AI. Każde zadanie to mini-system IT współdzielący z innymi jedynie mechanizmy w `./packages`.
+**Konsekwencje:** Nowa sekcja w `general.md`. Feedback memory `feedback_llm_first.md`. Przebudowa S03E05 z deterministycznego na dwufazową architekturę agentową (ADR-004).

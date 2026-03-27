@@ -5,6 +5,14 @@ Szczegóły architektury: `.ai/architecture.md`. Szczegóły decyzji: `.ai/adr/`
 
 ---
 
+## Learning Goals
+
+Celem kursu AI Devs 4 jest nauka efektywnego wykorzystywania LLM w tworzeniu systemów IT.
+Każde zadanie to mini-system IT, współdzielący z innymi jedynie mechanizmy w `./packages`.
+Rozwiązania powinny demonstrować użycie LLM jako centralnego elementu decyzyjnego —
+nawet gdy problem da się rozwiązać deterministycznie, zaprojektuj agenta LLM z narzędziami.
+Algorytmy (BFS, sort) opakowuj jako tools dla agenta. Decyzje o strategii podejmuje LLM.
+
 ## Scope
 
 - Jedno zadanie = jeden katalog `lessons/ts/S{XX}/E{YY}/`
