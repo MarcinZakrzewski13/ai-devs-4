@@ -313,3 +313,25 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 **Rozwiazanie:** Dwufazowa architektura agentowa. Faza 1: Discovery agent (gpt-5-mini, ~17 iteracji) odkrywa 3 endpointy, zbiera wiedzę do KnowledgeBase. Faza 2: knowledge extraction (parser). Faza 3: Route planner agent (gpt-5-mini, ~15 iteracji) z BFS jako narzedziem — sam wybiera rocket + dismount, submituje main route i beaver route. Koszt: ~$0.02.
 
 **Extra flag:** `{FLG:ABEAVER}` — "Tam sa bobry!" Planner agent rozumuje o bobrach z knowledge base, szuka tras do polnocnej wody, znajduje (1,6) przy strumieniu. "You found beavers by the stream!"
+
+---
+
+## Sezon 4
+
+### S04E01 — OKO Editor (API Discovery + CRUD)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S04/E01/task.md` |
+| **Solution** | `lessons/ts/S04/E01/solution.md` |
+| **Status** | Rozwiazane |
+
+**Cel:** Modyfikacja systemu OKO (Centrum Operacyjne) przez API. Agent LLM odkrywa API i panel webowy w runtime, reklasyfikuje incydent Skolwin (MOVE03→MOVE04), oznacza zadanie jako wykonane, tworzy nowy incydent Komarowo.
+
+**Czego uczy:**
+- API discovery przez agenta — akcja `help` ujawnia dostepne operacje
+- Web panel indexing — odczyt HTML z sanityzacja (prompt injection, link loops, page limit)
+- Temporal constraints — aktualizacje API wygasaja w sekundy, wymagaja batch execution
+- Minimalna ingerencja — dodatkowe zmiany lamia walidacje systemu
+
+**Rozwiazanie:** Single-phase agent (gpt-5-mini, 8 iteracji). Faza 1: Discovery — help + 4 strony panelu. Faza 2: batch_update_and_done — 4 API calls w rapid burst + natychmiastowe done. Kluczowe: batch tool omija TTL updates. Koszt: ~$0.01.
