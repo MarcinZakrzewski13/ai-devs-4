@@ -27,8 +27,16 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | S03E05 | Planowanie trasy na mapie z przeszkodami | LLM | gpt-5-mini |
 | S04E01 | API discovery + CRUD w systemie OKO | LLM | gpt-5-mini |
 | S04E02 | Harmonogram turbiny wiatrowej (async API, 40s limit) | deterministyczne | — |
+| S04E03 | Ewakuacja partyzanta z ruin Domatowa (siatka 11x11) | LLM (hybrydowe) | gpt-5-mini |
+| S04E04 | Organizacja notatek Natana w filesystem | LLM | gpt-5-mini |
+| S04E05 | Zamowienia magazynowe z autoryzacja (CRUD + SQL + SHA1) | LLM | claude-sonnet-4-6 |
+| S05E01 | Nasluch radiowy — routing danych (tekst/binarka/szum) | LLM (hybrydowe) | gpt-5-nano + gpt-5-mini |
+| S05E02 | Rozmowa audio z operatorem systemu (TTS/STT) | LLM | TTS + Whisper + gpt-5-mini |
+| S05E03 | Eksploracja zdalnego serwera (shell access, logi Rafala) | LLM | claude-sonnet-4-6 |
+| S05E04 | Nawigacja rakiety po siatce 3x12 (radar OKO + SHA1) | LLM (hybrydowe) | gpt-5-nano |
+| S05E05 | Maszyna czasu — 3 skoki czasowe (human-in-the-loop) | LLM | gpt-5-mini |
 
-**Razem:** 6 deterministycznych, 11 LLM
+**Razem:** 6 deterministycznych, 19 LLM (w tym 3 hybrydowe)
 
 ---
 
@@ -383,3 +391,166 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Nie konfiguruj czego system nie oczekuje — "posrednie" godziny lamia walidacje unlock codes
 
 **Rozwiazanie:** 7-fazowy deterministyczny pipeline, zero LLM. Weather kolejkowany pierwszy (najwolniejszy ~24s). Analiza: 3 burze → idle/90°, produkcja przy 5.9 m/s (interpolacja → 4.7kW). Bulk config + turbinecheck + done. Czas: 36.3s. Koszt: $0.00.
+
+---
+
+### S04E03 — Domatowo (misja ewakuacyjna)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S04/E03/task.md` |
+| **Solution** | — |
+| **Status** | Nierozwiazane |
+
+**Cel:** Odnalezienie partyzanta ukrywajacego sie w ruinach Domatowa i przeprowadzenie ewakuacji helikopterem. Siatka 11x11 z terenami, max 4 transportery + 8 zwiadowcow, budzet 300 punktow akcji.
+
+**Czego uczy:**
+- Planowanie taktyczne z ograniczonym budzetem — optymalizacja kosztow akcji
+- Koordynacja wielu jednostek na siatce (transportery po ulicach, zwiadowcy pieszo)
+- Analiza mapy i wnioskowanie z sygnalu ("najwyzsze bloki")
+- Hybrid agent: BFS pathfinder jako narzedzie agenta LLM
+
+**Plan:** Agent LLM (gpt-5-mini) z narzedziami: get_map, analyze_terrain (identyfikacja najwyzszych blokow), find_path (BFS po ulicach), create_unit, move_unit, inspect_field, call_helicopter. Transporter (1pt/pole) wozi zwiadowcow blisko celu, inspekcja pieszo (7pt/pole) tylko najwyzszych blokow.
+
+---
+
+### S04E04 — Filesystem (organizacja bazy wiedzy)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S04/E04/task.md` |
+| **Solution** | — |
+| **Status** | Nierozwiazane |
+
+**Cel:** Pobranie notatek Natana (ZIP), ekstrakcja relacji miasta-osoby-towary, budowa struktury filesystem (/miasta, /osoby, /towary) z odpowiednia zawartoscia.
+
+**Czego uczy:**
+- Ekstrakcja wiedzy z nieustrukturyzowanych notatek — LLM Structured Output
+- Budowanie grafu relacji (knowledge graph) z tekstu
+- Filesystem jako strukturalna reprezentacja danych
+- Normalizacja nazw (brak polskich znakow, mianownik l.poj.)
+
+**Plan:** Pipeline: download ZIP -> parse notatki -> LLM Structured Output (gpt-5-mini) -> normalizacja nazw -> batch createFile -> done. Bez agent loop — dobrze zdefiniowany output.
+
+---
+
+### S04E05 — Foodwarehouse (zamowienia magazynowe)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S04/E05/task.md` |
+| **Solution** | — |
+| **Status** | Nierozwiazane |
+
+**Cel:** Przygotowanie zamowien dla miast z food4cities.json. Wymaga korelacji danych miedzy API magazynu, baza SQLite (creatorID, destination) i generatorem podpisow SHA1.
+
+**Czego uczy:**
+- Multi-tool orchestration — CRUD + SQL + kryptografia w jednej petli agentowej
+- Korelacja danych miedzy roznymi systemami
+- Workflow transakcyjny z mozliwoscia resetu
+- Podpisy bezpieczenstwa (SHA1)
+
+**Plan:** Agent loop (claude-sonnet-4-6) z narzedziami: database_query, orders CRUD, generate_signature, reset, done. Agent odkrywa schemat DB, koreluje z food4cities.json, tworzy zamowienia z poprawnymi podpisami.
+
+---
+
+## Sezon 5
+
+### S05E01 — Radiomonitoring (nasluch radiowy)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S05/E01/task.md` |
+| **Solution** | — |
+| **Status** | Nierozwiazane |
+
+**Cel:** Przechwycenie i analiza materialow z nasluchu radiowego. Mieszane dane: transkrypcje, szum, pliki binarne (Base64). Ustalenie: nazwa miasta "Syjon", jego powierzchnia, liczba magazynow, numer telefonu.
+
+**Czego uczy:**
+- Inteligentny routing danych — decyzja co analizowac kodem, co LLM-em
+- Zarzadzanie budzetem tokenow — duze binarki nie trafiaja do LLM
+- Base64 decoding i detekcja typu MIME
+- Multi-model dispatch na podstawie typu danych
+
+**Plan:** Pipeline z routerem: start -> listen loop -> klasyfikacja (tekst/binarka/szum) -> dekodowanie lokalne -> LLM tylko dla tekstu i malych binarek -> synteza raportu -> transmit. Modele: gpt-5-nano (tekst), gpt-5-mini (binarki, synteza).
+
+---
+
+### S05E02 — Phonecall (rozmowa audio)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S05/E02/task.md` |
+| **Solution** | — |
+| **Status** | Nierozwiazane |
+
+**Cel:** Przeprowadzenie wieloetapowej rozmowy audio z operatorem systemu. Ustalenie ktora droga (RD224/RD472/RD820) jest przejezdna i doprowadzenie do wylaczenia monitoringu.
+
+**Czego uczy:**
+- Generowanie audio (TTS) — polskie komunikaty jako MP3 Base64
+- Transkrypcja audio (STT) — zrozumienie odpowiedzi operatora
+- Protokoly konwersacyjne — kolejnosc etapow ma znaczenie
+- Maszyna stanow dla wieloetapowej konwersacji
+
+**Plan:** Maszyna stanow: start -> przedstawienie (Tymon Gajewski) -> pytanie o drogi + bazy Zygfryda -> parse odpowiedzi -> prosba o monitoring -> haslo BARBAKAN. UWAGA: wymaga modeli TTS/Whisper (do zatwierdzenia).
+
+---
+
+### S05E03 — Shellaccess (eksploracja serwera)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S05/E03/task.md` |
+| **Solution** | — |
+| **Status** | Nierozwiazane |
+
+**Cel:** Eksploracja zdalnego serwera przez Shell API. Znalezienie w /data/ logow o Rafale — data, miasto, wspolrzedne. Zwrocenie daty DZIEN PRZED znalezieniem.
+
+**Czego uczy:**
+- Eksploracja nieznanych systemow przez shell (identycznie jak S03E02)
+- Analiza logow z grep i jq
+- Ekstrakcja informacji z nieustrukturyzowanych danych
+- Arytmetyka dat (dzien przed)
+
+**Plan:** Agent loop (claude-sonnet-4-6, ~10-15 iteracji) z narzedziami: shell_exec, submit_answer, finish. Wzorzec identyczny z S03E02 firmware. ls /data/ -> grep rafael -> cat -> extract -> echo JSON.
+
+---
+
+### S05E04 — Goingthere (nawigacja rakiety)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S05/E04/task.md` |
+| **Solution** | — |
+| **Status** | Nierozwiazane |
+
+**Cel:** Nawigacja rakiety po siatce 3x12 do bazy w Grudziadzu. Omijanie skal (hinty radiowe w jezyku zeglarskim) i neutralizacja radarow OKO (SHA1 disarm).
+
+**Czego uczy:**
+- Robust error handling — uszkodzone odpowiedzi API, losowe bledy
+- Parsowanie znieksztalconego JSON (regex fallback)
+- SHA1 kryptografia w kontekscie bezpieczenstwa
+- Interpretacja jezyka naturalnego (hinty zeglarskie) przez LLM/keyword matching
+- Nawigacja real-time z wieloma zrodlami danych
+
+**Plan:** Deterministyczna petla gry: per kolumna -> GET frequencyScanner -> disarm jesli namierzony (SHA1) -> GET getmessage (hint) -> LLM/keyword classify (gpt-5-nano) -> go/left/right. Retry na losowe bledy.
+
+---
+
+### S05E05 — Timetravel (maszyna czasu)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S05/E05/task.md` |
+| **Solution** | — |
+| **Status** | Nierozwiazane |
+
+**Cel:** Trzy skoki czasowe: (1) 2238-11-05 po baterie, (2) powrot do dzis, (3) portal do 2024-11-12 (dzien przed znalezieniem Rafala). Konfiguracja API + interfejs webowy (PT-A, PT-B, PWR).
+
+**Czego uczy:**
+- Wspolpraca czlowiek-AI (operator UI, agent API) — human-in-the-loop
+- Development oparty na dokumentacji — syncRatio formula z timetravel.md
+- Obliczenia matematyczne (syncRatio) na podstawie regul z dokumentacji
+- Multi-step state machine z ograniczeniami (bateria, internalMode, flux density)
+
+**Plan:** Interaktywny asystent CLI (gpt-5-mini): parsowanie dokumentacji -> obliczanie syncRatio -> configure API -> instrukcje dla operatora (PT-A, PT-B, PWR w UI) -> monitorowanie internalMode -> 3 skoki. Wersja ambitna: 2 agenty (API + Playwright browser automation).

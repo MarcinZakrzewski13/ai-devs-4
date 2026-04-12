@@ -2,7 +2,7 @@
 
 AI_Devs 4: Builders to kurs praktyczny poswiecony budowaniu produkcyjnych rozwiazan opartych na generatywnej sztucznej inteligencji. Kurs prowadzi od fundamentow interakcji z modelami jezykowymi (LLM) przez API, przez projektowanie narzedzi i agentow AI, az po zaawansowane systemy wieloagentowe z dlugoterminowa pamiecia i bazami wiedzy. Kazda lekcja laczy teorie z praktyka — materialy wideo, schematy architektoniczne i przyklady kodu uzupelniane sa zadaniami praktycznymi rozwiazywanymi w TypeScript (Bun). Kurs uczy swiadomego doboru narzedzi: kiedy uzyc LLM, a kiedy wystarczy deterministyczny kod; jak projektowac prompty, schematy i narzedzia; jak budowac odpornych agentow zdolnych do samodzielnej interakcji z otoczeniem.
 
-Materialy lekcyjne znajduja sie w `lessons/txt/S01/` i `lessons/txt/S02/`. Kolejne sezony (S03–S05) beda dodawane w miare postepow kursu.
+Materialy lekcyjne znajduja sie w `lessons/txt/S01/` - `lessons/txt/S05/`.
 
 ---
 
@@ -71,3 +71,105 @@ Lekcja o systemach wieloagentowych i komunikacji miedzy agentami. Omawia wzorce 
 Lekcja podsumowujaca sezon — kompleksowe podejscie do projektowania i implementacji agentow. Omawia konfiguracje agenta: tozsamosc, profil, reguly, limity, styl, sesja. Anatomia instrukcji systemowej i najlepsze praktyki. Projektowanie protokolow komunikacji w srodowiskach wieloagentowych, dostosowywanie glosu/tonu do roznych interfejsow. Strategie przydzialu narzedzi agentom, dystrybucja wiedzy i wspoldzielenie kontekstu, architektura przeplywu danych, srodowiska sandbox dla wykonywania zadan agenta.
 
 **Plik:** `lessons/txt/S02/s02e05-projektowanie-agentow-1773962356.md`
+
+---
+
+## Sezon 3 — Budowa agentow z narzedziami i interakcja z otoczeniem
+
+### S03E01: Ewaluacja i walidacja danych
+
+Lekcja o ocenie jakosci danych i wykrywaniu anomalii. Omawia hybrydowe przetwarzanie — deterministyczny kod dla danych liczbowych, LLM dla interpretacji jezyka naturalnego. Porusza optymalizacje kosztow (deduplikacja, minimalizacja tokenow), budowanie regul walidacyjnych na podstawie specyfikacji, oraz limitacje keyword matching wobec negacji w jezyku naturalnym.
+
+**Plik:** `lessons/txt/S03/s03e01-ewaluacja-1774310792.md`
+
+### S03E02: Interakcja z systemami zewnetrznymi
+
+Lekcja o agentach interagujacych z nieznanymi systemami przez shell/API. Omawia petlę agentowa z Function Calling do interaktywnego debugowania, eksploracje nieznanych srodowisk (zaczynaj od `help`), respektowanie ograniczen srodowiska i wielokrokowe rozwiazywanie problemow.
+
+**Plik:** `lessons/txt/S03/s03e02-interakcja-1774393233.md`
+
+### S03E03: Nawigacja w zmiennym srodowisku
+
+Lekcja o reagowaniu na dynamicznie zmieniajacy sie stan otoczenia. Omawia predykcje stanu, decyzje na podstawie przyszlych pozycji, discovery API przez eksperyment, deterministyczne petle decyzyjne.
+
+**Plik:** `lessons/txt/S03/s03e03-nawigacja-1774566782.md`
+
+### S03E04: Projektowanie narzedzi dla agentow zewnetrznych
+
+Lekcja o budowaniu API/narzedzi konsumowanych przez zewnetrzne agenty AI. Omawia projektowanie opisow narzedzi z perspektywy modelu, guard LLM jako warstwę bezpieczenstwa, normalizację jezyka naturalnego do structured data, trojwarstwowa architekturę: guard → normalizer → silnik deterministyczny.
+
+**Plik:** `lessons/txt/S03/s03e04-narzedzia-1774655710.md`
+
+### S03E05: Agentowe planowanie tras
+
+Lekcja o agentach odkrywajacych narzedzia w runtime i planujacych trasy. Omawia API discovery przez meta-endpoint (toolsearch), Knowledge Base pattern, LLM jako decision-maker, algorytmy (BFS) opakowane jako AiTool.
+
+**Plik:** `lessons/txt/S03/s03e05-planowanie-1774741741.md`
+
+---
+
+## Sezon 4 — Automatyzacja, bazy wiedzy i rozwiazania firmowe
+
+### S04E01: Automatyzacja i monitoring systemow
+
+Lekcja o agentach modyfikujacych systemy operacyjne (CRUD) w runtime. Omawia API discovery, web panel indexing z sanityzacja (prompt injection, link loops), temporal constraints (TTL), batch execution.
+
+**Plik:** `lessons/txt/S04/s04e01-automatyzacja-1774821363.md`
+
+### S04E02: Asynchroniczne API i time-boxed execution
+
+Lekcja o pracy z asynchronicznymi API (queue + poll) w ograniczonym czasie. Omawia kolejkowanie zadan, optymalizacje critical path, interpolacje danych z dokumentacji, walidacje konfiguracji.
+
+**Plik:** `lessons/txt/S04/s04e02-asynchroniczne-api-1774914236.md`
+
+### S04E03: Kontekstowa wspolpraca z AI
+
+Lekcja o integracji AI w codzienną prace bez bezposredniej interakcji. Omawia szeroką perspektywę kontekstowej pracy z AI, integracje z narzedziami (GSuite, Slack, Obsidian, Linear), definiowanie zalozen i procesow w tle, zarzadzanie zdarzeniami, izolacje agentow w systemach wieloagentowych, systemy samokontroli.
+
+**Plik:** `lessons/txt/S04/s04e03-kontekstowa-wspolpraca-z-ai-1774999647.md`
+
+### S04E04: Projektowanie wlasnej bazy wiedzy dla AI
+
+Lekcja o budowaniu prywatnych baz wiedzy. Omawia mapowanie obszarow pomocy AI, strukture bazy wiedzy (Profile/World/Craft/Operations/System), szablony notatek i frontmatter, format Markdown, roznice miedzy baza wiedzy a pamiecia dlugoterminowa, modele do edycji notatek, polaczenie z agentami przez szablony.
+
+**Plik:** `lessons/txt/S04/s04e04-projektowanie-wlasnej-bazy-wiedzy-dla-ai-1775085192.md`
+
+### S04E05: Projektowanie rozwiazan wewnatrzfirmowych
+
+Lekcja o zastosowaniu AI w firmach. Omawia aspekt biznesowy (koszty, prawo, vendor selection), kulturowy (buy-in, warsztaty), techniczny (wybor modeli, architektura agentow, optymalizacja). Przykłady: checklists, onboarding, style guides, content review. MCP Apps jako interfejsy interaktywne. Prywatnosc danych i weryfikacja ludzka.
+
+**Plik:** `lessons/txt/S04/s04e05-projektowanie-rozwiazan-wewnatrzfirmowych-1775189135.md`
+
+---
+
+## Sezon 5 — Architektura, produkcja i nowa rzeczywistosc
+
+### S05E01: Architektura aplikacji z AI
+
+Lekcja o architekturze systemow AI. Omawia wzorzec Gateway, projektowanie API, dostep do systemu plikow, struktury baz danych, zarzadzanie zaleznosci, obsluge wielu providerow. Prymitywy vs funkcje, architektury agentow (Orchestrator, Blackboard, DAG), multi-provider support.
+
+**Plik:** `lessons/txt/S05/s05e01-architektura-1775412680.md`
+
+### S05E02: Zestaw narzedzi
+
+Lekcja o budowaniu interfejsow uzytkownika dla AI. Omawia renderowanie Markdown, streaming, niestandardowe bloki (reasoning/tools/artifacts), interfejsy glosowe, ekosystem narzedzi (markdown-it, highlight.js, DOMPurify, live-kit). Zaawansowane komponenty UI i wzorce integracji narzedzi.
+
+**Plik:** `lessons/txt/S05/s05e02-zestaw-narzedzi-1775625284.md`
+
+### S05E03: Rozwoj funkcjonalnosci
+
+Lekcja o cyklu zycia aplikacji AI. Omawia stabilnosc fundamentow vs dynamike wyzszych warstw, zarzadzanie rozwojem agentow (migracje modeli, zarzadzanie mozliwosciami), typowe awarie (rate limits, moderacja, wydajnosc, koszty, skutecznosc), wzorce sukcesu. Autoprompty i frameworki (DSPy/AX).
+
+**Plik:** `lessons/txt/S05/s05e03-rozwoj-funkcjonalnosci-1775596919.md`
+
+### S05E04: Produkcja
+
+Lekcja o wyzwaniach produkcyjnych: usuwanie wiadomosci, halucynacje audio, pulapki obslugi narzedzi, problemy z dlugimi tekstami. Obszerny przyklad architektury enterprise z systemami wieloagentowymi, zarzadzaniem kontekstem, systemami zdarzen, integracja MCP, human-in-the-loop, observability, przetwarzaniem w tle.
+
+**Plik:** `lessons/txt/S05/s05e04-produkcja-1775717856.md`
+
+### S05E05: Nowa rzeczywistosc
+
+Lekcja finalna — nowe mozliwosci spotykaja stare zasady. Omawia kompletny projekt "Wonderlands": zaawansowany system agentowy z digital garden (file-based wiki), wspolpraca wieloagentowa, integracja narzedzi MCP, sandbox execution, generowanie audio/obrazow, web browsing, przetwarzanie w tle. Praktyczna dyskusja o wspolpracy agentow, niestandardowych narzedziach, bazach wiedzy i zrownowazonych codziennych workflow z agentami AI.
+
+**Plik:** `lessons/txt/S05/s05e05-secret-1775803400.md`
