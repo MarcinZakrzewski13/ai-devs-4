@@ -399,18 +399,18 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | | |
 |---|---|
 | **Task** | `lessons/ts/S04/E03/task.md` |
-| **Solution** | — |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S04/E03/solution.md` |
+| **Status** | Rozwiazane |
 
 **Cel:** Odnalezienie partyzanta ukrywajacego sie w ruinach Domatowa i przeprowadzenie ewakuacji helikopterem. Siatka 11x11 z terenami, max 4 transportery + 8 zwiadowcow, budzet 300 punktow akcji.
 
 **Czego uczy:**
 - Planowanie taktyczne z ograniczonym budzetem — optymalizacja kosztow akcji
 - Koordynacja wielu jednostek na siatce (transportery po ulicach, zwiadowcy pieszo)
-- Analiza mapy i wnioskowanie z sygnalu ("najwyzsze bloki")
-- Hybrid agent: BFS pathfinder jako narzedzie agenta LLM
+- Kontekst przestrzenny w system prompt (mapa ASCII + klastry B3 + koszty)
+- Jeden generyczny tool (domatowo_action) zamiast wielu specjalizowanych
 
-**Plan:** Agent LLM (gpt-5-mini) z narzedziami: get_map, analyze_terrain (identyfikacja najwyzszych blokow), find_path (BFS po ulicach), create_unit, move_unit, inspect_field, call_helicopter. Transporter (1pt/pole) wozi zwiadowcow blisko celu, inspekcja pieszo (7pt/pole) tylko najwyzszych blokow.
+**Rozwiazanie:** Agent gpt-5-mini z 1 narzedziem (domatowo_action). Mapa pre-ladowana do system prompt — agent nie traci iteracji na getMap. Strategia: transporter z 3 zwiadowcami dowozy ich do 3 klastrow B3, potem inspekcje. Partyzant znaleziony w H10. Zuzyto 73/300 pkt akcji (24%). Flaga w answers/final/.
 
 ---
 

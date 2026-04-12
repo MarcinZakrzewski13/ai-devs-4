@@ -78,6 +78,75 @@ lessons/ts/
 - integracja z LLM izolowana w osobnym module (`classifyJobs.ts` itp.)
 - typy współdzielone przez moduły zadania żyją w `types.ts`
 
+## Startup output — standard terminalowy
+
+Każdy `main.ts` musi wypisać na terminal wyraźny output **natychmiast po uruchomieniu**, zanim nastąpi pierwsze wywołanie API lub LLM. Użytkownik nie może patrzeć w czarny ekran i nie wiedzieć czy aplikacja działa.
+
+**Wzorzec:**
+```typescript
+const W = 58;
+const BORDER = chalk.cyan("═".repeat(W));
+const step = (label: string) =>
+  console.log(chalk.cyan("  ◆ ") + chalk.white(label) + chalk.gray("..."));
+const done = (label: string) =>
+  console.log(chalk.green("  ✓ ") + chalk.gray(label));
+
+// Na początku main():
+console.log("\n" + BORDER);
+console.log(chalk.cyan.bold("  NAZWA OPERACJI / ZADANIA".padEnd(W - 2)));
+console.log(chalk.gray("  Krótki opis: model, tryb, limity"));
+console.log(BORDER + "\n");
+
+// Przed każdym długim krokiem (fetch, reset, LLM):
+step("Pobieranie danych z API");
+const data = await fetchSomething();
+done("Dane załadowane");
+
+// Separator przed pętlą agenta:
+console.log("\n" + chalk.cyan("─".repeat(W)));
+console.log(chalk.cyan.bold("  AGENT STARTUJE"));
+console.log(chalk.cyan("─".repeat(W)) + "\n");
+```
+
+**Zasady:**
+- `step(label)` — pojawia się **przed** wywołaniem (od razu po uruchomieniu kroku)
+- `done(label)` — pojawia się **po** zakończeniu (potwierdza sukces)
+- Banner (`BORDER`) zawiera nazwę zadania i konfigurację (model, limity)
+- Separator "AGENT STARTUJE" oddziela fazę przygotowania od pętli agenta
+- Wzorzec: `lessons/ts/S04/E03/main.ts`
+
+## Konwencja kolorów i stylu terminalowego
+
+Obowiązuje podział na dwie warstwy wizualne:
+
+**Warstwa procesowania — żywe kolory + emotikony**
+Informacje o tym co robi aplikacja z perspektywy domeny: meldunki, rozkazy, wyniki analizy LLM, flagi, zdarzenia misji. Muszą być atrakcyjne wizualnie i czytelne na pierwszy rzut oka.
+
+| Rodzaj | Kolor | Przykład |
+|--------|-------|---------|
+| Nagłówki / bannery | `chalk.cyan.bold` | `══ OPERACJA DOMATOWO ══` |
+| Akcje / rozkazy | `chalk.magenta` + `chalk.yellow` | `▶ ROZKAZ [S1]: inspekcja pola F2` |
+| Meldunki terenowe | `chalk.yellow` | `"Mężczyzna za workami z cementem."` |
+| Analiza LLM (neutralna) | `chalk.hex('#FF8C00')` (pomarańcz) | `🔍 ANALIZA: Pole puste, brak celów.` |
+| Sukces / cel znaleziony | `chalk.bgGreen.black.bold` | `🎯 CEL ZLOKALIZOWANY!` |
+| Flaga | `chalk.bgYellow.black.bold` | `🏁 FLAGA: {FLG:...}` |
+| Wynik negatywny / błąd misji | `chalk.bgRed.white.bold` | `✗ MISJA NIEUDANA` |
+
+**Warstwa techniczna — stonowane kolory + opcjonalnie emotikony**
+Informacje do debugowania: numery iteracji, hashes, ścieżki plików, kody HTTP, punkty akcji. Muszą być obecne, ale nie rozpraszać od warstwy domeny.
+
+| Rodzaj | Kolor | Przykład |
+|--------|-------|---------|
+| Iteracje agenta | `chalk.gray` | `┄ iter 5/100` |
+| Ścieżki plików, zapisy | `chalk.gray` | `[save-answer] tmp → answers/...` |
+| Szczegóły ruchu (kroki, pkt) | `chalk.gray` | `A6 ──[4 kroków]──▶ D6` |
+| Punkty akcji (ok) | `chalk.green` (inline) | `[pkt: 253/300]` |
+| Punkty akcji (uwaga) | `chalk.yellow` (inline) | `[pkt: 80/300]` |
+| Punkty akcji (krytyczne) | `chalk.red` (inline) | `[pkt: 20/300]` |
+| Błędy API / techniczne | `chalk.red` | `✗ API: Missing field "object"` |
+
+**Reguła ogólna:** jeśli komunikat jest odpowiedzią na pytanie *"co robi aplikacja?"* — żywy kolor. Jeśli odpowiada na pytanie *"co dzieje się pod spodem?"* — stonowany kolor.
+
 **Przepływ danych (przykład S01E01):**
 ```
 CSV → loadPeople() → PersonRecord[]
