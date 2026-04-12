@@ -414,23 +414,24 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 
 ---
 
-### S04E04 — Filesystem (organizacja bazy wiedzy)
+### S04E04 — Filesystem (organizacja notatek Natana)
 
 | | |
 |---|---|
 | **Task** | `lessons/ts/S04/E04/task.md` |
-| **Solution** | — |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S04/E04/solution.md` |
+| **Status** | Rozwiazane |
 
-**Cel:** Pobranie notatek Natana (ZIP), ekstrakcja relacji miasta-osoby-towary, budowa struktury filesystem (/miasta, /osoby, /towary) z odpowiednia zawartoscia.
+**Cel:** Ekstrakcja z notatek Natana (3 pliki tekstowe) informacji o miastach, osobach-handlarzach i towarach; zbudowanie wirtualnego filesystemu przez API hubu (/miasta, /osoby, /towary) i zatwierdzenie akcja "done".
 
 **Czego uczy:**
-- Ekstrakcja wiedzy z nieustrukturyzowanych notatek — LLM Structured Output
-- Budowanie grafu relacji (knowledge graph) z tekstu
-- Filesystem jako strukturalna reprezentacja danych
-- Normalizacja nazw (brak polskich znakow, mianownik l.poj.)
+- Structured Output (gpt-5-mini) jako kontrakt miedzy LLM a reszta pipeline'u
+- API discovery (`action: "help"`) przed kodowaniem — pattern nazw, limity, allowed_actions batch
+- Walidator jako oracle — blad `code=-805 missing [...]` zwraca precyzyjna liste brakujacych danych, ktorych LLM nie mogl wywnioskowac z kontekstu
+- Separacja LLM-call (cached w tmp/extracted.json) od deterministycznego buildOps — iteracje nie wymagaja rerunu modelu
+- Kody statusu `!= 0` nie zawsze oznaczaja blad (batch `code=100` = "executed", sprawdzaj `results[]`)
 
-**Plan:** Pipeline: download ZIP -> parse notatki -> LLM Structured Output (gpt-5-mini) -> normalizacja nazw -> batch createFile -> done. Bez agent loop — dobrze zdefiniowany output.
+**Rozwiazanie:** Pipeline load → extract(LLM) → buildOps → sendBatch → sendDone. LLM robi polska fleksje (`chlebow` → `chleb`, `w Domatowie` → `domatowo`), normalizacje znakow i scalanie wzmianek o osobach. Reszta deterministyczna. Koszt: ~$0.002.
 
 ---
 
