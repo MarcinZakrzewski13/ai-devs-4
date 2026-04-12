@@ -440,18 +440,19 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | | |
 |---|---|
 | **Task** | `lessons/ts/S04/E05/task.md` |
-| **Solution** | — |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S04/E05/solution.md` |
+| **Status** | Rozwiazane — {FLG:JUSTEATIT} |
 
 **Cel:** Przygotowanie zamowien dla miast z food4cities.json. Wymaga korelacji danych miedzy API magazynu, baza SQLite (creatorID, destination) i generatorem podpisow SHA1.
 
 **Czego uczy:**
 - Multi-tool orchestration — CRUD + SQL + kryptografia w jednej petli agentowej
-- Korelacja danych miedzy roznymi systemami
-- Workflow transakcyjny z mozliwoscia resetu
-- Podpisy bezpieczenstwa (SHA1)
+- Schema discovery przez SHOW CREATE TABLE (PRAGMA zablokowane)
+- Role-based authorization — creatorID musi miec role transportu (role_id=2)
+- Error-driven learning — bledy API (-570, -680, -652) jako informacja o schemacie
+- Workflow transakcyjny — reset + pelny restart po bledzie autoryzacji
 
-**Plan:** Agent loop (claude-sonnet-4-6) z narzedziami: database_query, orders CRUD, generate_signature, reset, done. Agent odkrywa schemat DB, koreluje z food4cities.json, tworzy zamowienia z poprawnymi podpisami.
+**Rozwiazanie:** Agent (claude-sonnet-4-6, 21 iteracji). Faza 1: odkrycie schematu DB. Faza 2: signatureGenerator z action:"generate". Faza 3: reset po bledzie roli, nowe zamowienia z creatorID=2. Faza 4: batch append × 8 miast → done → flaga. Koszt: ~$0.15.
 
 ---
 
