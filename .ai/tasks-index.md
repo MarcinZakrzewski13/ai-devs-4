@@ -4,6 +4,34 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 
 ---
 
+## Przeglad: LLM vs deterministyczne
+
+> **Aktualizuj po kazdym rozwiazanym zadaniu.**
+
+| Zadanie | Problem | Typ | Model LLM |
+|---------|---------|-----|-----------|
+| S01E01 | Klasyfikacja zawodow z CSV | LLM | gpt-5-mini |
+| S01E02 | Geolokalizacja podejrzanego (Haversine) | deterministyczne | — |
+| S01E03 | Agent proxy HTTP z function calling | LLM | gpt-5-mini |
+| S01E04 | Odczyt kodu trasy z PNG (Vision) | LLM | gpt-5-mini (Vision) |
+| S01E05 | Aktywacja trasy przez samo-dokumentujace API | deterministyczne | — |
+| S02E01 | Optymalizacja promptu klasyfikacyjnego (100 tokenow) | LLM | claude-sonnet |
+| S02E02 | Puzzle rotacji kabli na planszy 3x3 | deterministyczne | — |
+| S02E03 | Kompresja logow do 1500 tokenow | deterministyczne | — |
+| S02E04 | Przeszukiwanie skrzynki mailowej przez API | LLM | Gemini Flash |
+| S02E05 | Planowanie misji drona z analiza mapy | LLM | gpt-5.4 (Vision) |
+| S03E01 | Wykrywanie anomalii w 9999 plikach sensorow | LLM (hybrydowe) | gpt-5-nano |
+| S03E02 | Debugowanie firmware na VM przez Shell API | LLM | Claude Sonnet 4.6 |
+| S03E03 | Nawigacja robota przez plansze z ruchomymi blokami | deterministyczne | — |
+| S03E04 | Budowanie narzedzi HTTP dla zewnetrznego agenta | LLM | gpt-5-nano + gpt-5-mini |
+| S03E05 | Planowanie trasy na mapie z przeszkodami | LLM | gpt-5-mini |
+| S04E01 | API discovery + CRUD w systemie OKO | LLM | gpt-5-mini |
+| S04E02 | Harmonogram turbiny wiatrowej (async API, 40s limit) | deterministyczne | — |
+
+**Razem:** 6 deterministycznych, 11 LLM
+
+---
+
 ## Sezon 1
 
 ### S01E01 — People (klasyfikacja zawodow)
@@ -63,7 +91,7 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Session management — wieloturowa konwersacja z pamiecia (in-memory + JSONL)
 - Serwer HTTP z `Bun.serve()`, rejestracja endpointu w Centrali
 
-**Rozwiazanie:** 9 modulow. Kluczowy mechanizm: hardcoded override w `tools.ts` — destination zawsze nadpisywany na PWR6132PL niezalezenie od parametrow modelu. System prompt nadaje agentowi tozsamosc "Marka". JSONL logging per sesja ulatwia debugowanie. Zwroc uwage na separacje: model decyduje "co" (check/redirect), ale system kontroluje "jak" (override destination).
+**Rozwiazanie:** 9 modulow, LLM: gpt-5-mini (agent loop z function calling). Kluczowy mechanizm: hardcoded override w `tools.ts` — destination zawsze nadpisywany na PWR6132PL niezalezenie od parametrow modelu. System prompt nadaje agentowi tozsamosc "Marka". JSONL logging per sesja ulatwia debugowanie. Zwroc uwage na separacje: model decyduje "co" (check/redirect), ale system kontroluje "jak" (override destination).
 
 ---
 
@@ -335,3 +363,23 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Minimalna ingerencja — dodatkowe zmiany lamia walidacje systemu
 
 **Rozwiazanie:** Single-phase agent (gpt-5-mini, 8 iteracji). Faza 1: Discovery — help + 4 strony panelu. Faza 2: batch_update_and_done — 4 API calls w rapid burst + natychmiastowe done. Kluczowe: batch tool omija TTL updates. Koszt: ~$0.01.
+
+---
+
+### S04E02 — Windpower (harmonogram turbiny wiatrowej)
+
+| | |
+|---|---|
+| **Task** | `lessons/ts/S04/E02/task.md` |
+| **Solution** | `lessons/ts/S04/E02/solution.md` |
+| **Status** | Rozwiazane |
+
+**Cel:** Zaprogramowanie harmonogramu turbiny wiatrowej w 40-sekundowym oknie serwisowym. Analiza prognozy pogody (84 wpisy), ochrona przed wichurami (>14 m/s), wyznaczenie okna produkcji energii pokrywajacego deficit 3-4 kW.
+
+**Czego uczy:**
+- Asynchroniczne API (queue + poll) — kolejkowanie zadan, jednorazowy odczyt wynikow przez getResult
+- Time-boxed execution — 40s limit wymusza paralelizm i optymalizacje critical path
+- Interpolacja danych z dokumentacji — step function vs linear interpolation (5.9 m/s: 12% vs 34%)
+- Nie konfiguruj czego system nie oczekuje — "posrednie" godziny lamia walidacje unlock codes
+
+**Rozwiazanie:** 7-fazowy deterministyczny pipeline, zero LLM. Weather kolejkowany pierwszy (najwolniejszy ~24s). Analiza: 3 burze → idle/90°, produkcja przy 5.9 m/s (interpolacja → 4.7kW). Bulk config + turbinecheck + done. Czas: 36.3s. Koszt: $0.00.
