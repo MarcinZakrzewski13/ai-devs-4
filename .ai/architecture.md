@@ -390,6 +390,12 @@ Dobierz model odpowiednio do złożoności zadania:
 
 Do analizy obrazów (np. map, schematów, skanów dokumentów) użyj `gpt-5-mini` lub `gpt-5` — przekaż obraz w `content` jako `input_image` / `image_url`.
 
+### Modele audio (Speech-to-Text)
+
+| Model | Kiedy używać |
+|---|---|
+| `whisper-1` | Transkrypcja audio → tekst (S2T). Wejście: plik audio (mp3, wav, m4a, webm, ogg, flac). API: `audio.transcriptions.create`. |
+
 ### Modele OpenRouter (non-OpenAI)
 
 Modele dostępne wyłącznie przez OpenRouter (`createOpenRouterProvider()`):

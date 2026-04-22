@@ -222,3 +222,12 @@ Format: append-only, nowe wpisy na dole.
 **Decyzja:** Dodano sekcję "Learning Goals" do `.ai/rules/general.md`. Rozwiązania zadań muszą demonstrować użycie LLM jako centralnego elementu decyzyjnego. Algorytmy opakowujemy jako tools dla agenta. Decyzje o strategii podejmuje LLM, nie if/else w kodzie.
 **Powód:** Celem kursu jest nauka efektywnego wykorzystywania LLM w IT. Rozwiązanie czysto deterministyczne (np. BFS bez agenta) nie uczy niczego o programowaniu z AI. Każde zadanie to mini-system IT współdzielący z innymi jedynie mechanizmy w `./packages`.
 **Konsekwencje:** Nowa sekcja w `general.md`. Feedback memory `feedback_llm_first.md`. Przebudowa S03E05 z deterministycznego na dwufazową architekturę agentową (ADR-004).
+
+---
+
+## DL-024 — Whisper-1 jako dozwolony model Speech-to-Text
+
+**Data:** 2026-04-22
+**Decyzja:** Dodano `whisper-1` do listy dozwolonych modeli w `architecture.md` w nowej sekcji "Modele audio (Speech-to-Text)". Model przeznaczony do transkrypcji plików audio (mp3, wav, m4a, webm, ogg, flac) przez OpenAI API `audio.transcriptions.create`.
+**Powód:** Zadania z sezonu S02 wymagają transkrypcji nagrań audio. Dotychczas lista dozwolonych modeli obejmowała wyłącznie text/vision — brak pozycji S2T blokował realizację takich zadań.
+**Konsekwencje:** Nowa sekcja "Modele audio (Speech-to-Text)" w `architecture.md` pomiędzy Vision a OpenRouter. Użycie wymaga bezpośredniego klienta OpenAI (nie przez `ModelProvider`) — `createDefaultProvider()` nie obsługuje audio endpointa.
