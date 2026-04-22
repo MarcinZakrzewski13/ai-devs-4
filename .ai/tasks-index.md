@@ -463,8 +463,8 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | | |
 |---|---|
 | **Task** | `lessons/ts/S05/E01/task.md` |
-| **Solution** | — |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S05/E01/solution.md` |
+| **Status** | Rozwiazane ✓ |
 
 **Cel:** Przechwycenie i analiza materialow z nasluchu radiowego. Mieszane dane: transkrypcje, szum, pliki binarne (Base64). Ustalenie: nazwa miasta "Syjon", jego powierzchnia, liczba magazynow, numer telefonu.
 
