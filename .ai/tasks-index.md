@@ -483,18 +483,22 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | | |
 |---|---|
 | **Task** | `lessons/ts/S05/E02/task.md` |
-| **Solution** | — |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S05/E02/solution.md` |
+| **Status** | Rozwiazane |
 
-**Cel:** Przeprowadzenie wieloetapowej rozmowy audio z operatorem systemu. Ustalenie ktora droga (RD224/RD472/RD820) jest przejezdna i doprowadzenie do wylaczenia monitoringu.
+**Cel:** Przeprowadzenie wieloetapowej rozmowy audio z operatorem systemu OKO. Ustalenie ktora droga (RD224/RD472/RD820) jest przejezdna i doprowadzenie do wylaczenia monitoringu.
 
 **Czego uczy:**
-- Generowanie audio (TTS) — polskie komunikaty jako MP3 Base64
-- Transkrypcja audio (STT) — zrozumienie odpowiedzi operatora
-- Protokoly konwersacyjne — kolejnosc etapow ma znaczenie
-- Maszyna stanow dla wieloetapowej konwersacji
+- Pipeline glosowy S2T -> LLM -> T2S (whisper-1 + gpt-4o-mini-tts + gpt-5-mini)
+- Persystencja udanych zdan (`successful-phrases.json`) — reuse akceptowanych wypowiedzi w kolejnych attemptach
+- Dywersyfikacja przez `temperature: 1.0` + eksplicite przekazanie historii poprzednich prob w prompcie
+- Structured Output do ekstrakcji statusow drog z tekstu operatora
+- State machine z kategorycznymi hintami per faza (zamiast jednego wielkiego promptu)
+- Constraint checker jako druga linia obrony (blacklist slow, wymuszone hasla per faza)
+- Empiryczne odkrywanie kontraktu API (niedokumentowane kody 120/150/160 huba)
+- Robustnosc: auto-restart × 4, non-JSON retry z backoffem (Cloudflare 520), delay miedzy attemptami
 
-**Plan:** Maszyna stanow: start -> przedstawienie (Tymon Gajewski) -> pytanie o drogi + bazy Zygfryda -> parse odpowiedzi -> prosba o monitoring -> haslo BARBAKAN. UWAGA: wymaga modeli TTS/Whisper (do zatwierdzenia).
+**Plan:** state machine OPEN_LINE -> IDENTITY_CONFIRMED -> STATUSES_RECEIVED -> AUTH_CHALLENGED -> SUCCESS. Kluczowe odkrycia: (1) hub niedeterministyczny na tym samym audio, wiec persystuj udane; (2) `speed: 0.4` w TTS = brzmi mniej robotycznie; (3) T-3 wymaga inline uzasadnienia (transport, utajnione, brak logow), bez tego hub odrzuca; (4) hasło BARBAKAN pada dwa razy: raz w T-2 (autoryzacja pytania), raz w T-4 (autoryzacja krytycznej akcji po code=160).
 
 ---
 

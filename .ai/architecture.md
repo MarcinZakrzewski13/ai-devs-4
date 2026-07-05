@@ -396,6 +396,12 @@ Do analizy obrazów (np. map, schematów, skanów dokumentów) użyj `gpt-5-mini
 |---|---|
 | `whisper-1` | Transkrypcja audio → tekst (S2T). Wejście: plik audio (mp3, wav, m4a, webm, ogg, flac). API: `audio.transcriptions.create`. |
 
+### Modele audio (Text-to-Speech)
+
+| Model | Kiedy używać |
+|---|---|
+| `gpt-4o-mini-tts` | Synteza mowy z tekstu (T2S). Sterowalny „instrukcją głosu" (ton, tempo, styl). Wyjście: MP3/WAV/OPUS/AAC/FLAC/PCM. API: `audio.speech.create`. Wybór głosu: `alloy`/`echo`/`onyx`/`nova`/`shimmer`/`sage`/`ash`/`coral`/`ballad`/`verse`. |
+
 ### Modele OpenRouter (non-OpenAI)
 
 Modele dostępne wyłącznie przez OpenRouter (`createOpenRouterProvider()`):

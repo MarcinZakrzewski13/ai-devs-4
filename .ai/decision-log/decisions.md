@@ -231,3 +231,12 @@ Format: append-only, nowe wpisy na dole.
 **Decyzja:** Dodano `whisper-1` do listy dozwolonych modeli w `architecture.md` w nowej sekcji "Modele audio (Speech-to-Text)". Model przeznaczony do transkrypcji plików audio (mp3, wav, m4a, webm, ogg, flac) przez OpenAI API `audio.transcriptions.create`.
 **Powód:** Zadania z sezonu S02 wymagają transkrypcji nagrań audio. Dotychczas lista dozwolonych modeli obejmowała wyłącznie text/vision — brak pozycji S2T blokował realizację takich zadań.
 **Konsekwencje:** Nowa sekcja "Modele audio (Speech-to-Text)" w `architecture.md` pomiędzy Vision a OpenRouter. Użycie wymaga bezpośredniego klienta OpenAI (nie przez `ModelProvider`) — `createDefaultProvider()` nie obsługuje audio endpointa.
+
+---
+
+## DL-025 — gpt-4o-mini-tts jako dozwolony model Text-to-Speech
+
+**Data:** 2026-07-05
+**Decyzja:** Dodano `gpt-4o-mini-tts` do listy dozwolonych modeli w `architecture.md` w nowej sekcji "Modele audio (Text-to-Speech)". Model do syntezy mowy z tekstu przez OpenAI API `audio.speech.create`. Sterowalny "instrukcją głosu" (ton, tempo, styl) oraz parametrem `speed` (0.25–4.0). Wyjście: MP3/WAV/OPUS/AAC/FLAC/PCM.
+**Powód:** Zadanie S05E02 (phonecall) wymagało wygenerowania audio Tymona Gajewskiego jako MP3 Base64 do wysyłki do huba. Dotychczas lista audio miała tylko S2T (whisper-1) — brak T2S blokował zadanie.
+**Konsekwencje:** Nowa sekcja "Modele audio (Text-to-Speech)" w `architecture.md` bezpośrednio pod S2T. Użycie wymaga bezpośredniego klienta OpenAI (nie przez `ModelProvider`) — analogicznie do whisper-1. Empirycznie odkryta reguła: `speed: 0.4` daje bardziej ludzkie brzmienie niż domyślne 1.0, klucz do przejścia klasyfikacji hub-a OKO w S05E02.
