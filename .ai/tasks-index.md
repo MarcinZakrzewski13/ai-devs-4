@@ -285,6 +285,8 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Respektowanie ograniczen srodowiska (.gitignore = nie czytaj, ban = czekaj)
 - Wielokrokowe rozwiazywanie problemow: haslo → lock file → konfiguracja → uruchomienie
 
+**Uwaga (S05E03 tez shell):** ten sam wzorzec agentowy zastosowany w S05E03 shellaccess.
+
 **Rozwiazanie:** Petla agentowa (Claude Sonnet 4.6, max 30 iteracji) z 3 narzedziami (shell_exec, submit_answer, finish). Agent sam eksploruje VM: poznaje komendy, znajduje haslo w `/home/operator/notes/pass.txt`, usuwa lock file, naprawia settings.ini (odkomentowanie SAFETY_CHECK, wylaczenie test_mode, wlaczenie cooling), uruchamia firmware i wyciaga kod ECCS. Typowy przebieg: 27 iteracji (z czego ~8 to czekanie na ban). Koszt: ~$0.20.
 
 ---
@@ -507,8 +509,8 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 | | |
 |---|---|
 | **Task** | `lessons/ts/S05/E03/task.md` |
-| **Solution** | — |
-| **Status** | Nierozwiazane |
+| **Solution** | `lessons/ts/S05/E03/solution.md` |
+| **Status** | Rozwiazane ✓ |
 
 **Cel:** Eksploracja zdalnego serwera przez Shell API. Znalezienie w /data/ logow o Rafale — data, miasto, wspolrzedne. Zwrocenie daty DZIEN PRZED znalezieniem.
 
@@ -518,7 +520,7 @@ Indeks wszystkich plikow `task.md` i `solution.md` w projekcie. Dla kazdego zada
 - Ekstrakcja informacji z nieustrukturyzowanych danych
 - Arytmetyka dat (dzien przed)
 
-**Plan:** Agent loop (claude-sonnet-4-6, ~10-15 iteracji) z narzedziami: shell_exec, submit_answer, finish. Wzorzec identyczny z S03E02 firmware. ls /data/ -> grep rafael -> cat -> extract -> echo JSON.
+**Rozwiazanie:** Agent loop (claude-sonnet-4-6, 16 iteracji) z 2 narzedziami: shell_exec (POST /verify {task:shellaccess,answer:{cmd}}) + finish. Wzorzec jak S03E02. Agent sam odkryl 3 pliki (time_logs.csv + locations.json + gps.json = JOIN), znalazl wpis 2024-11-13 (cialo w jaskini), location_id 219 → Grudziadz, entry_id 954634 → 53.432303/18.968774, policzyl dzien PRZED (2024-11-12) i wyprodukowal echo JSON → flaga. Trzy pulapki srodowiska (hub waliduje kazdy JSON na stdout, read-only FS, limit 4096 B) ominiete przez model w runtime (jq → jq -r plain text). Koszt: ~$0.20.
 
 ---
 
